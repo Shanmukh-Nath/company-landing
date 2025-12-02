@@ -179,11 +179,11 @@ export default function Header() {
       elevation={0}
       sx={{
         background: isScrolled
-          ? "rgba(255, 255, 255, 0.3)"
+          ? "rgba(255, 255, 255, 0.5)"
           : "linear-gradient(135deg, #ffffff 0%, #fef5f5 100%)",
         backdropFilter: isScrolled ? "blur(5px)" : "none",
         transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-        borderBottom: isScrolled ? "1px solid rgba(169, 36, 39, 0.1)" : "none",
+        borderBottom: isScrolled ? "none" : "none",
         boxShadow: isScrolled ? "0 4px 20px rgba(169, 36, 39, 0.08)" : "none",
         zIndex: 1300,
       }}

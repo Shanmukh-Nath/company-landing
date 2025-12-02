@@ -13,6 +13,57 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide scrollbar by default (WebKit browsers: Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Show scrollbar when scrolling */
+body.scrolling::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a92427, #c94043);
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(201, 36, 43, 0.6);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #c94043, #a92427);
+  box-shadow: 0 0 12px rgba(201, 36, 43, 0.8);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a92427 rgba(255, 255, 255, 0.05);
+}
+
+/* Disable horizontal overflow globally */
+html,
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Optional: smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -28,6 +79,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {

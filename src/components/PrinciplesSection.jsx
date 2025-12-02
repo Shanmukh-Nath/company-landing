@@ -6,7 +6,7 @@ import mcpServer from "../assets/mcp_server.svg";
 import secure_server from "../assets/secure_server.svg";
 import ai from "../assets/ai.svg";
 
-// --- Enhanced Principles Data (Kept detailed descriptions) ---
+// --- Principles Data ---
 const principles = [
   {
     title: "Privacy First & Compliance",
@@ -24,42 +24,31 @@ const principles = [
     illustration: ai,
   },
 ];
-// ------------------------------
 
-// Animation variants for subtle staggered appearance
+// Animation variants
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
+  visible: { transition: { staggerChildren: 0.15 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 70 }, // Increased Y to 70 for a slightly more dramatic spring up
+  hidden: { opacity: 0, y: 70 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 150, // Slightly lighter spring
-      damping: 20,
-    },
+    transition: { type: "spring", stiffness: 150, damping: 20 },
   },
 };
 
-// Component for a single card with the "Easter Egg" parallax effect
+// Principle Card Component
 const PrincipleCard = ({ item }) => {
   const [isHovering, setIsHovering] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Spring smoothing for a polished feel
   const mouseX = useSpring(x, { stiffness: 400, damping: 90 });
   const mouseY = useSpring(y, { stiffness: 400, damping: 90 });
 
-  // Map mouse position to card content movement (Parallax "Easter Egg")
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [5, -5]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-5, 5]);
 
@@ -68,11 +57,8 @@ const PrincipleCard = ({ item }) => {
       const rect = event.currentTarget.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-
-      // Calculate position relative to center, normalized to -0.5 to 0.5
       const normalizedX = (event.clientX - centerX) / (rect.width / 2);
       const normalizedY = (event.clientY - centerY) / (rect.height / 2);
-
       x.set(normalizedX);
       y.set(normalizedY);
     }
@@ -80,7 +66,6 @@ const PrincipleCard = ({ item }) => {
 
   const handleMouseLeave = () => {
     setIsHovering(false);
-    // Reset spring values smoothly
     x.set(0);
     y.set(0);
   };
@@ -91,41 +76,30 @@ const PrincipleCard = ({ item }) => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      style={{
-        perspective: 1000,
-        zIndex: isHovering ? 10 : 1, // Bring card to front on hover
-      }}
+      style={{ perspective: 1000, zIndex: isHovering ? 10 : 1 }}
     >
       <motion.div
-        // Subtle strong hover effect: Lift and shift hue slightly
         whileHover={{
           y: -8,
           boxShadow:
-            "0 20px 40px rgba(169, 36, 39, 0.1), 0 0 0 1px rgba(169, 36, 39, 0.2)",
+            "0 20px 40px rgba(169,36,39,0.1),0 0 0 1px rgba(169,36,39,0.2)",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        style={{
-          // Apply parallax rotation based on mouse position
-          rotateX,
-          rotateY,
-        }}
+        style={{ rotateX, rotateY }}
       >
         <Paper
-          elevation={0} // Start with no elevation for subtlety
+          elevation={0}
           sx={{
             p: 4,
             borderRadius: 4,
-            // Ensures cards are the same height regardless of text length
-            height: "450px",
+            height: "auto",
             textAlign: "center",
             transition: "all 0.3s",
-            background: "#ffffff",
-            // Stronger subtle border when not hovering
+            background: "#fff",
             border: "1px solid #eee",
             position: "relative",
           }}
         >
-          {/* Subtle Accent: A soft, colored ring around the illustration on hover */}
           <motion.div
             style={{
               position: "absolute",
@@ -136,7 +110,7 @@ const PrincipleCard = ({ item }) => {
               height: 140,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(169, 36, 39, 0.08) 0%, transparent 60%)",
+                "radial-gradient(circle, rgba(169,36,39,0.08) 0%, transparent 60%)",
               zIndex: 0,
             }}
             initial={{ scale: 0 }}
@@ -153,7 +127,7 @@ const PrincipleCard = ({ item }) => {
               height: 200,
               objectFit: "contain",
               mb: 3,
-              zIndex: 1, // Ensure image is above the accent
+              zIndex: 1,
               position: "relative",
             }}
           />
@@ -173,16 +147,17 @@ const PrincipleCard = ({ item }) => {
   );
 };
 
+// Principles Section
 export default function PrinciplesSection() {
   return (
     <Box
       sx={{
         py: 12,
         px: { xs: 3, md: 10 },
-        background: "linear-gradient(180deg, #ffffff 0%, #f7f7f7 100%)", // Very subtle background pull
+        background: "linear-gradient(180deg,#fff 0%,#f7f7f7 100%)",
       }}
     >
-      {/* --- Section Headers --- */}
+      {/* Headers */}
       <Typography
         variant="h4"
         sx={{
@@ -197,36 +172,37 @@ export default function PrinciplesSection() {
       </Typography>
       <Typography
         variant="h3"
-        sx={{
-          fontWeight: 900,
-          textAlign: "center",
-          mb: 8,
-          color: "#1a1a1a",
-        }}
+        sx={{ fontWeight: 900, textAlign: "center", mb: 8, color: "#1a1a1a" }}
       >
         Foundations of Trust and Innovation
       </Typography>
 
-      {/* --- Animated Grid Container --- */}
+      {/* Grid Container */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.4 }}
       >
-        <Grid container spacing={5} justifyContent="center">
+        <Grid
+          container
+          spacing={5}
+          justifyContent="center"
+          sx={{
+            flexWrap: { xs: "wrap", md: "nowrap" }, // Wrap on mobile, no-wrap on medium+
+            gap: { xs: 5, md: 3 },
+          }}
+        >
           {principles.map((item) => (
-            // --- CORRECTED GRID ITEM PROPS for horizontal layout starting on small screens ---
             <Grid
               item
-              xs={12} // Single column on mobile phones
-              sm={4} // Three columns starting from small screens (tablets in landscape/desktop)
-              md={4} // Keeps three columns on medium screens and up
+              xs={12} // stacked on mobile
+              md={4} // 3 per row on medium+
               key={item.title}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
               <PrincipleCard item={item} />
             </Grid>
-            // ---------------------------------------------------------------------------------
           ))}
         </Grid>
       </motion.div>

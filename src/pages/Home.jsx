@@ -6,6 +6,22 @@ import { GrSecure } from "react-icons/gr";
 import { TbTargetArrow } from "react-icons/tb";
 import { IoRocket } from "react-icons/io5";
 
+import {
+  MonitorSmartphone,
+  Globe,
+  Activity,
+  FileText,
+  Shield,
+  Headphones,
+  TrendingUp,
+  Settings,
+  FileMinus,
+  Languages,
+  ChartNetwork,
+  ShieldCheck,
+  Shredder,
+} from "lucide-react";
+
 import FeatureIcon from "../components/FeatureIcon";
 
 import PrinciplesSection from "../components/PrinciplesSection";
@@ -44,38 +60,83 @@ export default function Home() {
     {
       icon: (
         <FeatureIcon>
-          <GiElectric />
+          <MonitorSmartphone size={48} />
         </FeatureIcon>
       ),
-      text: "Lightning Fast",
-      desc: "Engineered for ultra-high responsiveness with optimized system architecture. Experience seamless automation workflows that react instantly, no matter the load.",
+      text: "MultiDevice Support",
+      desc: "Access your platform seamlessly across desktop, tablet, and mobile devices. Work anytime, anywhere, without interruptions or compatibility issues.",
     },
     {
       icon: (
         <FeatureIcon>
-          <GrSecure />
+          <Languages size={48} />
         </FeatureIcon>
       ),
-      text: "Secure by Design",
-      desc: "Built with end-to-end enterprise-grade security as the foundation, not an afterthought. Your data, identity, and operations remain protected at every layer of the system.",
+      text: "MultiLanguage Support",
+      desc: "Reach a global audience with full multilingual support. Users can interact in their preferred language, enhancing accessibility and engagement.",
     },
     {
       icon: (
         <FeatureIcon>
-          <TbTargetArrow />
+          <Activity size={48} />
         </FeatureIcon>
       ),
-      text: "Precision Engineering",
-      desc: "Developed using industry-standard best practices to ensure unmatched accuracy. Every module, workflow, and integration is crafted to deliver consistent, reliable outcomes.",
+      text: "Tracking and Analysis",
+      desc: "Monitor activities and workflows in real-time. Gain actionable insights from detailed tracking to optimize efficiency and performance.",
     },
     {
       icon: (
         <FeatureIcon>
-          <IoRocket />
+          <ChartNetwork size={48} />
         </FeatureIcon>
       ),
-      text: "Scalable Solutions",
-      desc: "Designed to expand effortlessly as your needs grow—from startups to large enterprises. Scale infrastructure, users, and workflows without disruptions or performance drops.",
+      text: "Analysis and Reports",
+      desc: "Generate comprehensive, easy-to-understand reports. Transform raw data into meaningful insights to drive smarter decisions.",
+    },
+    {
+      icon: (
+        <FeatureIcon>
+          <ShieldCheck size={48} />
+        </FeatureIcon>
+      ),
+      text: "Fully Secured",
+      desc: "Your data is protected with enterprise-grade security protocols and encryption. We ensure privacy, integrity, and compliance at every level.",
+    },
+    {
+      icon: (
+        <FeatureIcon>
+          <Headphones size={48} />
+        </FeatureIcon>
+      ),
+      text: "24/7 Assistance",
+      desc: "Receive round-the-clock support from our dedicated team. Any issues or queries are addressed promptly, ensuring uninterrupted operations.",
+    },
+    {
+      icon: (
+        <FeatureIcon>
+          <TrendingUp size={48} />
+        </FeatureIcon>
+      ),
+      text: "Increase your Productivity",
+      desc: "Automate repetitive tasks and streamline workflows. Focus on what matters most while the system handles the rest efficiently.",
+    },
+    {
+      icon: (
+        <FeatureIcon>
+          <Settings size={48} />
+        </FeatureIcon>
+      ),
+      text: "Decrease the Manual Workflow",
+      desc: "Minimize human intervention by automating processes. Reduce errors and save time with smoother, faster operations.",
+    },
+    {
+      icon: (
+        <FeatureIcon>
+          <Shredder size={48} />
+        </FeatureIcon>
+      ),
+      text: "Eliminates the Paper Work",
+      desc: "Go fully digital with secure and organized documentation. Reduce clutter and improve accessibility while protecting sensitive information.",
     },
   ];
 
@@ -157,6 +218,7 @@ export default function Home() {
     },
 
     heroContent: {
+      top: "-15%",
       maxWidth: "1000px",
       zIndex: 10,
       position: "relative",
@@ -239,9 +301,10 @@ export default function Home() {
     },
 
     scrollIndicator: {
+      top: "75%",
       position: "absolute",
       bottom: "40px",
-      left: "50%",
+      left: "45%",
       transform: "translateX(-50%)",
       display: "flex",
       flexDirection: "column",
@@ -267,7 +330,7 @@ export default function Home() {
       borderRadius: "4px",
       position: "absolute",
       top: "8px",
-      left: "50%",
+      left: "43%",
       transform: "translateX(-50%)",
     },
 
@@ -302,10 +365,11 @@ export default function Home() {
       maxWidth: "1200px",
       margin: "0 auto",
       padding: "0 20px",
-      flexWrap: "nowrap",
+      flexWrap: "wrap", // Allow wrapping
     },
 
     featureCard: {
+      flex: "0 0 25%",
       background: "#ffffff",
       padding: "40px 30px",
       borderRadius: "24px",
@@ -315,6 +379,7 @@ export default function Home() {
       transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
       position: "relative",
       overflow: "hidden",
+      minWidth: "250px",
     },
 
     featureIcon: {
@@ -335,6 +400,104 @@ export default function Home() {
       fontSize: "0.95rem",
       color: "#666",
       lineHeight: 1.6,
+    },
+
+    customizationSection: {
+      padding: "120px 20px",
+      background: "linear-gradient(180deg, #ffffff 0%, #fafafa 100%)",
+      position: "relative",
+      overflow: "hidden",
+    },
+
+    customizationContainer: {
+      maxWidth: "1200px",
+      margin: "0 auto",
+      position: "relative",
+      zIndex: 2,
+    },
+
+    customizationContent: {
+      textAlign: "center",
+    },
+
+    customizationBadge: {
+      display: "inline-flex",
+      alignItems: "center",
+      padding: "10px 24px",
+      background: "rgba(169, 36, 39, 0.08)",
+      border: "1px solid rgba(169, 36, 39, 0.2)",
+      borderRadius: "30px",
+      fontSize: "0.9rem",
+      fontWeight: 600,
+      color: "#a92427",
+      marginBottom: "24px",
+      letterSpacing: "0.5px",
+    },
+
+    customizationTitle: {
+      fontSize: "3rem",
+      fontWeight: 800,
+      color: "#1a1a1a",
+      marginBottom: "24px",
+      letterSpacing: "-1px",
+      lineHeight: 1.2,
+    },
+
+    customizationText: {
+      fontSize: "1.2rem",
+      color: "#666",
+      maxWidth: "900px",
+      margin: "0 auto 60px",
+      lineHeight: 1.8,
+      fontWeight: 400,
+    },
+
+    customizationGrid: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "24px",
+      maxWidth: "800px",
+      margin: "0 auto",
+      textAlign: "left",
+    },
+
+    customizationItem: {
+      display: "flex",
+      alignItems: "flex-start",
+      gap: "20px",
+      padding: "30px",
+      background: "#ffffff",
+      borderRadius: "16px",
+      border: "1px solid rgba(169, 36, 39, 0.1)",
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
+      transition: "all 0.3s ease",
+    },
+
+    customizationIcon: {
+      width: "50px",
+      height: "50px",
+      borderRadius: "12px",
+      background:
+        "linear-gradient(135deg, rgba(169, 36, 39, 0.1), rgba(169, 36, 39, 0.05))",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#a92427",
+      flexShrink: 0,
+    },
+
+    customizationItemTitle: {
+      fontSize: "1.25rem",
+      fontWeight: 700,
+      color: "#1a1a1a",
+      marginBottom: "8px",
+    },
+
+    customizationItemDesc: {
+      fontSize: "1rem",
+      color: "#666",
+      lineHeight: 1.6,
+      margin: 0,
     },
 
     statsSection: {
@@ -644,6 +807,91 @@ export default function Home() {
               />
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* ---------------- CUSTOMIZATION SECTION ---------------- */}
+      <section style={styles.customizationSection}>
+        <div style={styles.customizationContainer}>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            style={styles.customizationContent}
+          >
+            <span style={styles.customizationBadge}>
+              <Settings size={16} style={{ marginRight: "8px" }} />
+              Tailored Solutions
+            </span>
+            <h2 style={styles.customizationTitle}>
+              Built Around{" "}
+              <span style={styles.heroGradient}>Your Business</span>, Not the
+              Other Way Around
+            </h2>
+            <p style={styles.customizationText}>
+              From subtle interface adjustments like button placements and color
+              schemes to comprehensive workflow transformations, every solution
+              is meticulously crafted to align with your organization's unique
+              processes. We don't believe in one-size-fits-all—we build systems
+              that adapt to you.
+            </p>
+            <div style={styles.customizationGrid}>
+              <motion.div
+                style={styles.customizationItem}
+                whileHover={{ x: 10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div style={styles.customizationIcon}>
+                  <Settings size={24} />
+                </div>
+                <div>
+                  <h4 style={styles.customizationItemTitle}>
+                    Interface Customization
+                  </h4>
+                  <p style={styles.customizationItemDesc}>
+                    Personalize every visual element to match your brand
+                    identity
+                  </p>
+                </div>
+              </motion.div>
+              <motion.div
+                style={styles.customizationItem}
+                whileHover={{ x: 10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div style={styles.customizationIcon}>
+                  <Activity size={24} />
+                </div>
+                <div>
+                  <h4 style={styles.customizationItemTitle}>
+                    Workflow Engineering
+                  </h4>
+                  <p style={styles.customizationItemDesc}>
+                    Complete process redesign to mirror your operational
+                    excellence
+                  </p>
+                </div>
+              </motion.div>
+              <motion.div
+                style={styles.customizationItem}
+                whileHover={{ x: 10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div style={styles.customizationIcon}>
+                  <ChartNetwork size={24} />
+                </div>
+                <div>
+                  <h4 style={styles.customizationItemTitle}>
+                    Seamless Integration
+                  </h4>
+                  <p style={styles.customizationItemDesc}>
+                    Connect with your existing systems without disruption
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
