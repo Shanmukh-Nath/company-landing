@@ -9,13 +9,6 @@ export default defineConfig({
         manualChunks: {
           react: ["react", "react-dom", "react-router-dom"],
           framer: ["framer-motion"],
-          chakra: [
-            "@chakra-ui/react",
-            "@chakra-ui/icons",
-            "@emotion/react",
-            "@emotion/styled",
-            "framer-motion",
-          ],
           icons: ["react-icons", "lucide-react"],
         },
       },
