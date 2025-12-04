@@ -110,7 +110,7 @@ export default function Header() {
       submenu: [
         {
           label: "Milk Dairy Management System",
-          path: "/products/milk-dairy",
+          path: "/products/mdms",
           image: milkDairyImg,
           description:
             "Streamline dairy operations with automated milk collection, quality testing, and farmer payments.",

@@ -1,9 +1,12 @@
-import Header from "./components/Header";
-import { Routes, Route } from "react-router-dom";
+import Header from "./components/header";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
+import MilkDairyManagement from "./pages/products/mdms";
 import { useEffect } from "react";
 
 export default function App() {
+  const location = useLocation();
+  const isFullPageRoute = location.pathname === "/products/mdms";
   useEffect(() => {
     let timeout;
 
@@ -25,9 +28,10 @@ export default function App() {
     <>
       <Header />
 
-      <div style={{ marginTop: 90 }}>
+      <div style={{ marginTop: isFullPageRoute ? 0 : 90 }}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products/mdms" element={<MilkDairyManagement />} />
         </Routes>
       </div>
     </>
