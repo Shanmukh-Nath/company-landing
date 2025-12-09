@@ -1,7 +1,8 @@
-import Header from "./components/Header";
+import Header from "./components/header";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import MilkDairyManagement from "./pages/products/mdms";
+import HRMSProductPage from "./pages/products/hrms";
 import { useEffect } from "react";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/mdms" element={<MilkDairyManagement />} />
+          <Route path="/products/hrms" element={<HRMSProductPage />} />
         </Routes>
       </div>
     </>

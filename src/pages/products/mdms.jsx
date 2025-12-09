@@ -495,14 +495,9 @@ export default function MilkDairyManagement() {
     background:
       "linear-gradient(135deg, rgba(255,255,255,0.18), rgba(180,180,255,0.14))",
     borderRadius: 36,
-    padding: 24,
+    padding: 26,
     border: "1px solid rgba(255,255,255,0.12)",
     boxShadow: "0 8px 40px rgba(0,0,0,0.45)",
-    width: 120, // ⭐ slightly bigger than before
-    height: 120,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   };
 
   /* ------ STATS ------ */
@@ -889,13 +884,7 @@ export default function MilkDairyManagement() {
               <img
                 src={Opscale}
                 alt="Milk Dairy"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "contain",
-                  transform: "scale(1.35)", // ⭐ zoom in
-                  transformOrigin: "center", // keep perfectly centered
-                }}
+                style={{ width: "auto", height: 36 }}
               />
             </motion.div>
           </motion.div>

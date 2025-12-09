@@ -109,20 +109,20 @@ export default function Header() {
       hasPreview: true,
       submenu: [
         {
-          label: "Opscale",
+          label: "Opsacle",
           path: "/products/mdms",
           image: milkDairyImg,
           description:
             "Streamline dairy operations with automated milk collection, quality testing, and farmer payments.",
         },
-        /*{
+        {
           label: "HRMS",
           path: "/products/hrms",
           image: hrmsImg,
           description:
             "Complete HR solution for attendance, payroll, leave management, and employee self-service.",
         },
-        {
+        /*{
           label: "Inventory Management System",
           path: "/products/inventory",
           image: inventoryImg,
