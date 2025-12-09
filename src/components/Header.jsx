@@ -27,16 +27,22 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { motion, AnimatePresence } from "framer-motion";
 
+import ContactForm from "./ContactForm";
+
 import companyLogo from "../assets/smallLogo.png";
 import milkDairyImg from "../assets/productImages/milk-dairy.jpg";
 import hrmsImg from "../assets/productImages/hrms.jpg";
 import inventoryImg from "../assets/productImages/inventory.jpg";
 import scmImg from "../assets/productImages/scm.jpg";
 import bpoImg from "../assets/productImages/bpo.jpg";
+import artificial from "../assets/productImages/artificial.jpg";
 
 export default function Header() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:900px)");
+
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzMSlQUHq-lKZdVQwf3BwA7fiEPR9wBI38z66kluIeAV465w_hWOLTx2H3euwRGRaPK/exec";
 
   // preserved original states
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,6 +54,8 @@ export default function Header() {
 
   // mobile drawer state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [contactOpen, setContactOpen] = useState(false);
 
   const productsRef = useRef(null);
   const servicesRef = useRef(null);
@@ -109,14 +117,14 @@ export default function Header() {
       hasPreview: true,
       submenu: [
         {
-          label: "Opsacle",
-          path: "/products/mdms",
-          image: milkDairyImg,
+          label: "Opscale ERP Nexus",
+          path: "/products/opscale",
+          image: artificial, // replace with your new ERP landscape image
           description:
-            "Streamline dairy operations with automated milk collection, quality testing, and farmer payments.",
+            "An enterprise-wide ERP fabric integrating core operations with automation, unified data, and configurable workflows for limitless scalability.",
         },
         {
-          label: "HRMS",
+          label: "PromptHR",
           path: "/products/hrms",
           image: hrmsImg,
           description:
@@ -194,6 +202,7 @@ export default function Header() {
         alignItems="center"
         justifyContent="space-between"
         mb={1}
+        top={10}
       >
         <Typography variant="h6" fontWeight={700}>
           Kernn Menu
@@ -240,7 +249,7 @@ export default function Header() {
         <Box mt={2} p={1}>
           <Box
             onClick={() => {
-              navigate("/contact");
+              setContactOpen(true);
               setMobileMenuOpen(false);
             }}
             sx={{
@@ -261,6 +270,20 @@ export default function Header() {
       </List>
     </Box>
   );
+
+  const handleFormSubmit = async (data) => {
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      alert("Thank you! Your enquiry has been submitted.");
+      setContactOpen(false);
+    } catch (err) {
+      alert("Error sending your request. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -632,7 +655,7 @@ export default function Header() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Box
-                  onClick={() => navigate("/contact")}
+                  onClick={() => setContactOpen(true)}
                   sx={{
                     cursor: "pointer",
                     px: 3,
@@ -672,7 +695,11 @@ export default function Header() {
           )}
         </Toolbar>
       </AppBar>
-
+      <ContactForm
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        onSubmit={handleFormSubmit}
+      />
       {/* Mobile Drawer */}
       <Drawer
         anchor="right"

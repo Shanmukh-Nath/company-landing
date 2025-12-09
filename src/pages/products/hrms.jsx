@@ -1,9 +1,9 @@
 // ===============================
-// HRMS PRODUCT PAGE (FLAGSHIP EDITION)
-// PART 1/5 — Imports, Base Styles, Hero
+// HRMS PRODUCT PAGE (FLAGSHIP v2)
+// New Layout + Storytelling + Premium Styling
 // ===============================
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import {
@@ -51,12 +51,13 @@ export default function HRMSProductPage() {
   const COLOR = {
     primary: "#a92427",
     primaryDark: "#7e1c1e",
-    primarySoft: "rgba(169,36,39,0.2)",
+    primarySoft: "rgba(169,36,39,0.18)",
     textDark: "#111827",
     textSoft: "#6b7280",
     border: "rgba(229,231,235,1)",
     bgSoft: "rgba(248,250,252,1)",
     bgWhite: "#ffffff",
+    darkBg: "#020617",
   };
 
   const page = {
@@ -64,7 +65,7 @@ export default function HRMSProductPage() {
       width: "100vw",
       overflowX: "hidden",
       background:
-        "radial-gradient(circle at top left,#fff2f2 0,transparent 60%), radial-gradient(circle at bottom right,#ffecec 0,#fff 60%)",
+        "radial-gradient(circle at top left,#fff4f4 0,transparent 55%), radial-gradient(circle at bottom right,#ffe9e9 0,#ffffff 58%)",
     },
     section: {
       padding: "110px 24px",
@@ -78,16 +79,23 @@ export default function HRMSProductPage() {
     },
   };
 
+  const stylesHighlight = {
+    background: "linear-gradient(135deg,#a92427,#d63447,#ff7a7a)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  };
+
   // --------------------------
   // FRAMER MOTION VARIANTS
   // --------------------------
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 32 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.55, ease: "easeOut" },
     },
   };
 
@@ -95,7 +103,7 @@ export default function HRMSProductPage() {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.12, delayChildren: 0.12 },
     },
   };
 
@@ -110,32 +118,77 @@ export default function HRMSProductPage() {
     },
   };
 
-  // --------------------------
-  // DESIGN: FLOATING VISUAL GRID OVERLAY
-  // --------------------------
-
-  const FloatingGrid = () => (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        backgroundImage: `
-          linear-gradient(rgba(150,50,50,0.07) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(150,50,50,0.07) 1px, transparent 1px)
-        `,
-        backgroundSize: "62px 62px",
-        opacity: 0.25,
-      }}
-    />
-  );
-
-  // --------------------------
-  // HERO SECTION
-  // --------------------------
+  // =========================================
+  // HERO: HR OPERATING SYSTEM BOARD
+  // =========================================
 
   const Hero = () => (
-    <section style={page.section}>
+    <section
+      style={{
+        padding: "120px 24px 110px",
+        background:
+          "radial-gradient(circle at top,#111827 0,#020617 45%,#020617 100%)",
+        color: "white",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Ambient lights */}
+      <motion.div
+        style={{
+          position: "absolute",
+          width: 520,
+          height: 520,
+          borderRadius: "50%",
+          top: "-18%",
+          left: "-10%",
+          background:
+            "radial-gradient(circle,rgba(248,113,113,0.32),transparent 70%)",
+          filter: "blur(80px)",
+        }}
+        animate={{
+          scale: [1, 1.12, 1],
+          x: [0, 14, 0],
+          y: [0, -16, 0],
+        }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        style={{
+          position: "absolute",
+          width: 580,
+          height: 580,
+          borderRadius: "50%",
+          bottom: "-25%",
+          right: "-10%",
+          background:
+            "radial-gradient(circle,rgba(148,163,253,0.28),transparent 70%)",
+          filter: "blur(90px)",
+        }}
+        animate={{
+          scale: [1.1, 0.96, 1.1],
+          x: [0, -18, 0],
+          y: [0, 18, 0],
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Grid overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          opacity: 0.16,
+          backgroundImage: `
+            linear-gradient(rgba(148,163,184,0.22) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(148,163,184,0.22) 1px, transparent 1px)
+          `,
+          backgroundSize: "70px 70px",
+        }}
+      />
+
       <div style={page.container}>
         <motion.div
           variants={stagger}
@@ -143,382 +196,646 @@ export default function HRMSProductPage() {
           animate="show"
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0,1.05fr) minmax(0,0.95fr)",
+            gridTemplateColumns: "minmax(0,1.1fr) minmax(0,0.9fr)",
             gap: 60,
             alignItems: "center",
             position: "relative",
+            zIndex: 2,
           }}
         >
-          {/* FLOATING RED ORBS */}
-          <motion.div
-            style={{
-              position: "absolute",
-              width: 380,
-              height: 380,
-              borderRadius: "50%",
-              top: "-18%",
-              left: "-12%",
-              background:
-                "radial-gradient(circle,rgba(169,36,39,0.22),transparent 70%)",
-              filter: "blur(70px)",
-            }}
-            animate={{
-              scale: [1, 1.15, 1],
-              x: [0, 16, 0],
-              y: [0, -20, 0],
-            }}
-            transition={{
-              duration: 13,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-
-          <motion.div
-            style={{
-              position: "absolute",
-              width: 420,
-              height: 420,
-              borderRadius: "50%",
-              bottom: "-22%",
-              right: "-18%",
-              background:
-                "radial-gradient(circle,rgba(255,110,110,0.18),transparent 75%)",
-              filter: "blur(90px)",
-            }}
-            animate={{
-              scale: [1.1, 1, 1.1],
-              x: [0, -20, 0],
-              y: [0, 18, 0],
-            }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-
-          {/* Left Content */}
+          {/* LEFT: Story */}
           <motion.div variants={fadeUp}>
             <div
               style={{
-                display: "flex",
-                gap: 12,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "6px 14px",
+                borderRadius: 999,
+                border: "1px solid rgba(248,250,252,0.2)",
+                background: "rgba(15,23,42,0.8)",
+                fontSize: "0.8rem",
                 marginBottom: 18,
-                flexWrap: "wrap",
+                backdropFilter: "blur(12px)",
               }}
             >
+              <ShieldCheck size={14} />
               <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                  background: "rgba(255,230,230,0.9)",
-                  border: "1px solid rgba(169,36,39,0.18)",
-                  fontSize: "0.82rem",
-                  fontWeight: 600,
-                  color: COLOR.primary,
-                }}
+                style={{ letterSpacing: "0.14em", textTransform: "uppercase" }}
               >
-                <ShieldCheck size={14} />
-                Enterprise-grade HRMS
-              </span>
-
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                  background: "rgba(255,240,240,0.9)",
-                  border: "1px solid rgba(169,36,39,0.18)",
-                  fontSize: "0.82rem",
-                  fontWeight: 600,
-                  color: COLOR.primary,
-                }}
-              >
-                <MapPin size={14} />
-                Multi-country, Multi-entity Ready
+                Kernn HRMS • HR Operating System
               </span>
             </div>
 
             <h1
               style={{
-                fontSize: "clamp(2.7rem, 4.6vw, 3.6rem)",
+                fontSize: "clamp(2.8rem,4.6vw,3.7rem)",
                 fontWeight: 900,
-                color: "#151515",
-                letterSpacing: "-1.2px",
-                lineHeight: 1.08,
-                marginBottom: 20,
+                letterSpacing: "-1.3px",
+                lineHeight: 1.05,
+                marginBottom: 18,
               }}
             >
-              The HR Operating System for{" "}
-              <span
-                style={{
-                  background:
-                    "linear-gradient(120deg,#a92427,#de4343,#ff8c8c,#ffb9b9)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                people, time & payroll
-              </span>{" "}
-              across your entire organisation.
+              One <span style={stylesHighlight}>HR brain</span> for attendance,
+              shifts, leave{" "}
+              <span style={{ display: "block" }}>
+                and payroll across every unit.
+              </span>
             </h1>
 
             <p
               style={{
-                fontSize: "1.08rem",
+                fontSize: "1.05rem",
+                color: "#e5e7eb",
                 maxWidth: 540,
-                color: "#444",
-                lineHeight: 1.7,
-                marginBottom: 30,
+                lineHeight: 1.8,
+                marginBottom: 26,
               }}
             >
-              Kernn HRMS is one integrated engine connecting Attendance, Shifts,
-              Leave, Tasks and a deeply-modeled, multi-country Payroll suite.
-              Built for HR, Finance & Operations to work from the same source of
-              truth — finally.
+              Replace scattered spreadsheets and disconnected biometrics with a
+              single policy-aware HR engine. Attendance, shifts, tasks, leave
+              and a deeply modeled payroll suite — living on one operating
+              canvas.
             </p>
 
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: 16,
                 flexWrap: "wrap",
-                marginBottom: 32,
+                gap: 12,
+                marginBottom: 24,
               }}
             >
-              <span style={{ color: "#6b7280", fontSize: "0.9rem" }}>
-                Policy-first architecture
-              </span>
-              <div
-                style={{
-                  width: 4,
-                  height: 4,
-                  background: "#d4d4d4",
-                  borderRadius: 999,
-                }}
-              />
-              <span style={{ color: "#6b7280", fontSize: "0.9rem" }}>
-                Realtime cross-module sync
-              </span>
-              <div
-                style={{
-                  width: 4,
-                  height: 4,
-                  background: "#d4d4d4",
-                  borderRadius: 999,
-                }}
-              />
-              <span style={{ color: "#6b7280", fontSize: "0.9rem" }}>
-                Fully auditable for compliance
-              </span>
+              {[
+                "Multi-country, multi-entity ready",
+                "Policy → event → payslip traceability",
+                "Attendance, leave & payroll in one run rail",
+              ].map((t) => (
+                <div
+                  key={t}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "6px 10px",
+                    borderRadius: 999,
+                    background: "rgba(15,23,42,0.9)",
+                    border: "1px solid rgba(148,163,184,0.8)",
+                    fontSize: "0.78rem",
+                    color: "#e5e7eb",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: "50%",
+                      background:
+                        "linear-gradient(135deg,#f97373,#fecaca,#ffffff)",
+                    }}
+                  />
+                  {t}
+                </div>
+              ))}
             </div>
 
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 14,
+              }}
+            >
               <motion.a
-                href="#modules"
+                href="#story"
                 whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 18px 45px rgba(169,36,39,0.45)",
+                  scale: 1.04,
+                  boxShadow: "0 26px 60px rgba(0,0,0,0.5)",
                 }}
                 whileTap={{ scale: 0.96 }}
                 style={{
-                  padding: "14px 28px",
+                  padding: "14px 26px",
                   borderRadius: 999,
                   background: "linear-gradient(135deg,#a92427,#d63447,#ff7a7a)",
                   color: "#fff",
                   fontWeight: 700,
-                  fontSize: "0.98rem",
+                  fontSize: "0.95rem",
+                  textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  textDecoration: "none",
                 }}
               >
-                Explore HRMS Suite
+                Follow the HR story
                 <ArrowRight size={16} />
               </motion.a>
 
               <motion.a
-                href="#architecture"
+                href="#payroll"
                 whileHover={{
                   scale: 1.03,
-                  background: "rgba(255,250,250,1)",
+                  background: "rgba(15,23,42,0.9)",
                 }}
                 whileTap={{ scale: 0.96 }}
                 style={{
-                  padding: "13px 22px",
+                  padding: "13px 20px",
                   borderRadius: 999,
-                  border: "1px solid rgba(169,36,39,0.36)",
-                  background: "rgba(255,255,255,0.96)",
-                  color: COLOR.primary,
+                  border: "1px solid rgba(148,163,184,0.8)",
+                  background: "rgba(15,23,42,0.7)",
+                  color: "#e5e7eb",
                   fontWeight: 600,
-                  fontSize: "0.95rem",
+                  fontSize: "0.9rem",
+                  textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  textDecoration: "none",
                 }}
               >
-                How it works under the hood
+                See the payroll rail
               </motion.a>
             </div>
           </motion.div>
 
-          {/* Right Hero Visualization */}
-          <motion.div variants={fadeUp} style={{ position: "relative" }}>
-            <FloatingGrid />
-
+          {/* RIGHT: HR OS BOARD MOSAIC */}
+          <motion.div
+            variants={fadeUp}
+            style={{ position: "relative", zIndex: 2 }}
+          >
             <motion.div
               animate={softFloat.animate}
               style={{
-                background: "linear-gradient(145deg,#1e1b4b,#0f172a,#0b1020)",
-                padding: 26,
-                borderRadius: 28,
-                color: "white",
-                boxShadow: "0 26px 60px rgba(15,23,42,0.55)",
+                borderRadius: 30,
+                padding: 22,
+                background:
+                  "radial-gradient(circle at top left,#111827,#020617)",
+                border: "1px solid rgba(148,163,184,0.6)",
+                boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
                 position: "relative",
                 overflow: "hidden",
               }}
             >
+              {/* Subtle shine */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   background:
-                    "radial-gradient(circle at top left,rgba(255,255,255,0.14),transparent 60%)",
+                    "radial-gradient(circle at top left,rgba(248,250,252,0.16),transparent 60%)",
                   pointerEvents: "none",
                 }}
               />
 
-              {/* HEADER */}
+              {/* Top strip */}
               <div
                 style={{
-                  fontSize: "0.84rem",
-                  letterSpacing: "0.12em",
-                  color: "#c7d2fe",
-                  marginBottom: 6,
                   display: "flex",
                   alignItems: "center",
-                  gap: 6,
-                }}
-              >
-                <LayoutDashboard size={14} />
-                HR Control Board
-              </div>
-
-              <div
-                style={{
-                  fontSize: "1.25rem",
-                  fontWeight: 800,
+                  justifyContent: "space-between",
                   marginBottom: 18,
                 }}
               >
-                Where operations, finance & payroll meet.
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontSize: "0.82rem",
+                    color: "#9ca3af",
+                  }}
+                >
+                  <LayoutDashboard size={16} />
+                  <span>HR Command Centre</span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 4,
+                  }}
+                >
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      style={{
+                        width: 7,
+                        height: 7,
+                        borderRadius: "50%",
+                        background:
+                          i === 0 ? "#f97373" : i === 1 ? "#facc15" : "#4ade80",
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
 
-              {/* BADGES */}
+              {/* Mosaic grid */}
               <div
                 style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 10,
-                  marginBottom: 20,
+                  display: "grid",
+                  gridTemplateColumns: "1.25fr 1fr",
+                  gap: 12,
                 }}
               >
-                {[
-                  {
-                    icon: <AlarmClock size={12} />,
-                    label: "Live attendance signals",
-                  },
-                  {
-                    icon: <CalendarDays size={12} />,
-                    label: "Leave → Payroll impact",
-                  },
-                  {
-                    icon: <ShieldCheck size={12} />,
-                    label: "Statutory readiness",
-                  },
-                ].map((p, i) => (
-                  <span
-                    key={i}
+                {/* LEFT COLUMN - bigger panels */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: "minmax(0,1.1fr) minmax(0,0.9fr)",
+                    gap: 12,
+                  }}
+                >
+                  {/* Workforce today card */}
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.2 }}
                     style={{
-                      padding: "5px 10px",
-                      borderRadius: 999,
-                      background: "rgba(15,23,42,0.9)",
+                      borderRadius: 18,
+                      padding: 14,
+                      background:
+                        "linear-gradient(135deg,rgba(15,23,42,0.9),rgba(30,64,175,0.9))",
                       border: "1px solid rgba(148,163,184,0.7)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        fontSize: "0.8rem",
+                        color: "#e5e7eb",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <Users size={16} />
+                        Workforce today
+                      </span>
+                      <span
+                        style={{
+                          padding: "3px 8px",
+                          borderRadius: 999,
+                          background: "rgba(15,23,42,0.9)",
+                          border: "1px solid rgba(148,163,184,0.7)",
+                          fontSize: "0.72rem",
+                        }}
+                      >
+                        Live
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        marginTop: 4,
+                      }}
+                    >
+                      {[
+                        { label: "Present", val: "91%", tone: "#4ade80" },
+                        { label: "On leave", val: "6%", tone: "#facc15" },
+                        { label: "Remote", val: "3%", tone: "#38bdf8" },
+                      ].map((s) => (
+                        <div
+                          key={s.label}
+                          style={{
+                            flex: 1,
+                            borderRadius: 999,
+                            padding: "6px 8px",
+                            background: "rgba(15,23,42,0.9)",
+                            border: "1px solid rgba(148,163,184,0.6)",
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginBottom: 2,
+                            }}
+                          >
+                            <span style={{ color: "#cbd5f5" }}>{s.label}</span>
+                            <span style={{ fontWeight: 700 }}>{s.val}</span>
+                          </div>
+                          <div
+                            style={{
+                              height: 4,
+                              borderRadius: 999,
+                              background: "rgba(15,23,42,0.9)",
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: s.val,
+                                height: "100%",
+                                borderRadius: 999,
+                                background: s.tone,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Attendance and shifts pill row */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1.1fr 0.9fr",
+                      gap: 10,
+                    }}
+                  >
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      style={{
+                        borderRadius: 16,
+                        padding: 10,
+                        background: "rgba(15,23,42,0.95)",
+                        border: "1px solid rgba(148,163,184,0.7)",
+                        fontSize: "0.78rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: 4,
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <CalendarDays size={14} />
+                          Attendance signals
+                        </span>
+                        <span style={{ color: "#22c55e" }}>Stable</span>
+                      </div>
+                      <div
+                        style={{
+                          color: "#9ca3af",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        27 missing punches • 11 late entries flagged for review
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      style={{
+                        borderRadius: 16,
+                        padding: 10,
+                        background: "rgba(15,23,42,0.95)",
+                        border: "1px solid rgba(148,163,184,0.7)",
+                        fontSize: "0.78rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: 4,
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <Clock size={14} />
+                          Shifts & rosters
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          color: "#9ca3af",
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        94% coverage published • 3 teams in draft
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN - stack of cards */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: "minmax(0,1.05fr) minmax(0,0.95fr)",
+                    gap: 10,
+                  }}
+                >
+                  {/* Payroll card */}
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    style={{
+                      borderRadius: 18,
+                      padding: 12,
+                      background:
+                        "linear-gradient(135deg,rgba(15,23,42,0.9),rgba(12,148,136,0.9))",
+                      border: "1px solid rgba(148,163,184,0.8)",
                       fontSize: "0.8rem",
-                      display: "inline-flex",
-                      alignItems: "center",
+                      display: "flex",
+                      flexDirection: "column",
                       gap: 6,
                     }}
                   >
-                    {p.icon}
-                    {p.label}
-                  </span>
-                ))}
-              </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <ReceiptIndianRupee size={15} />
+                        Current pay cycle
+                      </span>
+                      <span
+                        style={{
+                          padding: "3px 7px",
+                          borderRadius: 999,
+                          background: "rgba(15,23,42,0.8)",
+                          border: "1px solid rgba(148,163,184,0.7)",
+                          fontSize: "0.7rem",
+                        }}
+                      >
+                        Draft
+                      </span>
+                    </div>
+                    <div style={{ color: "#e5e7eb" }}>
+                      97% employees clean •{" "}
+                      <span style={{ color: "#fed7aa" }}>3%</span> needs review
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 6,
+                        marginTop: 2,
+                      }}
+                    >
+                      {["Tax", "Statutory", "Bank files"].map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            padding: "3px 7px",
+                            borderRadius: 999,
+                            background: "rgba(15,23,42,0.9)",
+                            border: "1px solid rgba(148,163,184,0.7)",
+                            fontSize: "0.7rem",
+                            color: "#d1fae5",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
 
-              {/* STACKS */}
-              <div style={{ display: "grid", gap: 16 }}>
-                {[
-                  {
-                    label: "Workforce today",
-                    meta: "91% present • 6% on leave • 3% remote",
-                    icon: <Users size={20} />,
-                  },
-                  {
-                    label: "Current pay cycle",
-                    meta: "Draft • 97% clean, 3% needs review",
-                    icon: <ReceiptIndianRupee size={20} />,
-                  },
-                  {
-                    label: "Payroll compliance",
-                    meta: "2 warnings • 0 blockers",
-                    icon: <ShieldCheck size={20} />,
-                  },
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ y: -4 }}
+                  {/* Leave + Compliance row */}
+                  <div
                     style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1.05fr",
+                      gap: 10,
+                    }}
+                  >
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      style={{
+                        borderRadius: 16,
+                        padding: 10,
+                        background: "rgba(15,23,42,0.96)",
+                        border: "1px solid rgba(148,163,184,0.7)",
+                        fontSize: "0.78rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 4,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <ClipboardList size={14} />
+                          Leave & holidays
+                        </span>
+                      </div>
+                      <div style={{ color: "#e5e7eb" }}>
+                        18 pending approvals • next holiday in 4 days
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      style={{
+                        borderRadius: 16,
+                        padding: 10,
+                        background: "rgba(15,23,42,0.96)",
+                        border: "1px solid rgba(148,163,184,0.7)",
+                        fontSize: "0.78rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <ShieldCheck size={14} />
+                          Payroll compliance
+                        </span>
+                        <span style={{ color: "#bbf7d0", fontWeight: 600 }}>
+                          98% score
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 4,
+                          display: "flex",
+                          gap: 6,
+                          fontSize: "0.72rem",
+                          color: "#e5e7eb",
+                        }}
+                      >
+                        <span>PF</span>·<span>ESI</span>·<span>PT</span>·
+                        <span>WPS</span>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Bottom task strip */}
+                  <motion.div
+                    whileHover={{ y: -3 }}
+                    style={{
+                      marginTop: 6,
+                      borderRadius: 16,
+                      padding: 9,
+                      background: "rgba(15,23,42,0.98)",
+                      border: "1px solid rgba(148,163,184,0.7)",
+                      fontSize: "0.75rem",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      background:
-                        "linear-gradient(120deg,rgba(15,23,42,0.7),rgba(31,41,55,0.9))",
-                      border: "1px solid rgba(148,163,184,0.55)",
-                      padding: 14,
-                      borderRadius: 20,
                     }}
                   >
-                    <div>
-                      <div
-                        style={{
-                          fontSize: "0.88rem",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {item.label}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "0.78rem",
-                          color: "#cbd5e1",
-                        }}
-                      >
-                        {item.meta}
-                      </div>
-                    </div>
-                    {item.icon}
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                        color: "#e5e7eb",
+                      }}
+                    >
+                      <Workflow size={14} />
+                      Pending approvals
+                    </span>
+                    <span style={{ color: "#fde68a" }}>
+                      9 attendance • 6 leave • 2 payroll overrides
+                    </span>
                   </motion.div>
-                ))}
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -526,8 +843,160 @@ export default function HRMSProductPage() {
       </div>
     </section>
   );
+
+  // ===================================================
+  // STORY SECTION: FROM CHAOS TO HR OPERATING SYSTEM
+  // ===================================================
+
+  const StorySection = () => (
+    <section id="story" style={page.section}>
+      <div style={page.container}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: 56,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "2.4rem",
+              fontWeight: 850,
+              color: COLOR.textDark,
+              letterSpacing: "-0.9px",
+              marginBottom: 10,
+            }}
+          >
+            The story of how{" "}
+            <span style={stylesHighlight}>HR, attendance & payroll</span>{" "}
+            finally share one brain.
+          </h2>
+          <p
+            style={{
+              fontSize: "1.02rem",
+              color: COLOR.textSoft,
+              maxWidth: 720,
+              margin: "0 auto",
+              lineHeight: 1.8,
+            }}
+          >
+            Most organisations don’t have “an HRMS problem”. They have a
+            <strong> fragmentation problem</strong> — time, shifts, leave and
+            payroll live in separate tools. Kernn HRMS is a story of collapsing
+            those islands into one operating system.
+          </p>
+        </div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,minmax(0,1fr))",
+            gap: 26,
+          }}
+          data-story-grid
+        >
+          {[
+            {
+              label: "Chapter 1",
+              title: "Scattered signals everywhere.",
+              desc: "Biometric IDs in one system, GPS punches in another, leave on email, payroll in spreadsheets. HR teams spend nights reconciling events that should have met by design.",
+              bullets: [
+                "Manual reconciliation before every payroll run",
+                "Different truths for HR, Finance & Operations",
+                "No way to audit how a payslip was born",
+              ],
+            },
+            {
+              label: "Chapter 2",
+              title: "One policy graph to rule them all.",
+              desc: "Kernn starts with countries, entities, locations, grades and employees as a single policy-aware model. Attendance, shifts, leave, tasks and payroll all plug into this graph.",
+              bullets: [
+                "Policy → event → payout all linked",
+                "Versioned rule changes with retro safety",
+                "Real-time impact on employees and cost",
+              ],
+            },
+            {
+              label: "Chapter 3",
+              title: "An HR operating system, not just HR software.",
+              desc: "Now HR, Payroll, Finance, Managers and Employees interact with the same brain — through dashboards, self-service, approvals and a transparent payroll rail.",
+              bullets: [
+                "HR views exceptions instead of hunting for them",
+                "Payroll teams trust the engine and its logs",
+                "Employees understand time, leave & salary easily",
+              ],
+            },
+          ].map((card, idx) => (
+            <motion.div
+              key={card.title}
+              variants={fadeUp}
+              whileHover={{
+                y: -6,
+                boxShadow: "0 28px 60px rgba(15,23,42,0.12)",
+              }}
+              style={{
+                borderRadius: 24,
+                padding: 24,
+                background: COLOR.bgWhite,
+                border: `1px solid ${COLOR.border}`,
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: COLOR.primary,
+                }}
+              >
+                {card.label}
+              </div>
+              <div
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: 750,
+                  color: COLOR.textDark,
+                }}
+              >
+                {card.title}
+              </div>
+              <p
+                style={{
+                  fontSize: "0.93rem",
+                  color: COLOR.textSoft,
+                  lineHeight: 1.7,
+                }}
+              >
+                {card.desc}
+              </p>
+              <ul
+                style={{
+                  margin: 0,
+                  paddingLeft: 18,
+                  fontSize: "0.88rem",
+                  color: COLOR.textSoft,
+                  lineHeight: 1.6,
+                }}
+              >
+                {card.bullets.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+
   // --------------------------
-  // CORE MODULES CONFIG
+  // CORE MODULES CONFIG (same content)
   // --------------------------
 
   const coreModules = [
@@ -584,7 +1053,7 @@ export default function HRMSProductPage() {
   ];
 
   // --------------------------
-  // CORE MODULES SECTION
+  // CORE MODULES SECTION (NEW LAYOUT)
   // --------------------------
 
   const CoreModulesSection = () => (
@@ -593,15 +1062,15 @@ export default function HRMSProductPage() {
         <div
           style={{
             textAlign: "center",
-            marginBottom: 50,
+            marginBottom: 48,
           }}
         >
           <h2
             style={{
-              fontSize: "2.3rem",
-              fontWeight: 800,
+              fontSize: "2.35rem",
+              fontWeight: 820,
               color: COLOR.textDark,
-              letterSpacing: "-0.8px",
+              letterSpacing: "-0.9px",
               marginBottom: 10,
             }}
           >
@@ -612,17 +1081,18 @@ export default function HRMSProductPage() {
             style={{
               fontSize: "1.02rem",
               color: COLOR.textSoft,
-              maxWidth: 640,
+              maxWidth: 660,
               margin: "0 auto",
               lineHeight: 1.7,
             }}
           >
-            Attendance powers shifts, shifts impact leave, and all of it flows
+            Attendance powers shifts, shifts impact leave, and every event flows
             cleanly into payroll and analytics. Kernn HRMS is designed as one
-            operating system, not separate tools.
+            operating system — each module is a chapter in the same story.
           </p>
         </div>
 
+        {/* Two-column staggered layout instead of 3-flat grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -630,160 +1100,276 @@ export default function HRMSProductPage() {
           viewport={{ once: true, amount: 0.25 }}
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3,minmax(0,1fr))",
-            gap: 24,
+            gridTemplateColumns: "minmax(0,1.05fr) minmax(0,0.95fr)",
+            gap: 26,
           }}
-          data-modules-grid
+          data-core-modules-grid
         >
-          {coreModules.map((m, idx) => (
-            <motion.div
-              key={m.label}
-              variants={fadeUp}
-              whileHover={{
-                y: -6,
-                boxShadow: "0 22px 50px rgba(15,23,42,0.12)",
-                borderColor: COLOR.primarySoft,
-              }}
-              style={{
-                borderRadius: 22,
-                padding: 20,
-                background: COLOR.bgWhite,
-                border: `1px solid ${COLOR.border}`,
-                boxShadow: "0 18px 40px rgba(15,23,42,0.04)",
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-                position: "relative",
-                overflow: "hidden",
-              }}
-              data-module-card
-            >
-              {/* subtle corner ribbon */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 58,
-                  height: 58,
-                  background:
-                    "linear-gradient(135deg,transparent 50%,rgba(169,36,39,0.06) 50%)",
-                  borderTopRightRadius: 22,
+          <div style={{ display: "grid", gap: 20 }}>
+            {coreModules.slice(0, 3).map((m, idx) => (
+              <motion.div
+                key={m.label}
+                variants={fadeUp}
+                whileHover={{
+                  y: -4,
+                  boxShadow: "0 20px 50px rgba(15,23,42,0.12)",
+                  borderColor: COLOR.primarySoft,
                 }}
-              />
-
-              <div
                 style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: 14,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background:
-                    "linear-gradient(135deg,rgba(169,36,39,0.06),rgba(169,36,39,0.02))",
-                  color: COLOR.primary,
-                  marginBottom: 4,
-                }}
-              >
-                {m.icon}
-              </div>
-
-              <div
-                style={{
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: COLOR.primary,
-                  marginBottom: 2,
-                }}
-              >
-                Module {idx + 1}
-              </div>
-
-              <div
-                style={{
+                  borderRadius: 22,
+                  padding: 20,
+                  background: COLOR.bgWhite,
+                  border: `1px solid ${COLOR.border}`,
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: "column",
                   gap: 10,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+                data-module-card
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    width: 60,
+                    height: 60,
+                    background:
+                      "linear-gradient(135deg,transparent 50%,rgba(169,36,39,0.06) 50%)",
+                    borderTopRightRadius: 22,
+                  }}
+                />
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 14,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      "linear-gradient(135deg,rgba(169,36,39,0.06),rgba(169,36,39,0.02))",
+                    color: COLOR.primary,
+                    marginBottom: 4,
+                  }}
+                >
+                  {m.icon}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: COLOR.primary,
+                    marginBottom: 4,
+                  }}
+                >
+                  Module {idx + 1}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "1.12rem",
+                      fontWeight: 760,
+                      color: COLOR.textDark,
+                    }}
+                  >
+                    {m.label}
+                  </div>
+                  <span
+                    style={{
+                      padding: "4px 8px",
+                      borderRadius: 999,
+                      fontSize: "0.72rem",
+                      background: COLOR.bgSoft,
+                      color: "#6b7280",
+                      fontWeight: 500,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {m.tag}
+                  </span>
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: COLOR.textSoft,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {m.desc}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 6,
+                    marginTop: 4,
+                  }}
+                >
+                  {m.chips.map((chip) => (
+                    <span
+                      key={chip}
+                      style={{
+                        padding: "3px 8px",
+                        borderRadius: 999,
+                        background: "#f9fafb",
+                        border: `1px solid ${COLOR.border}`,
+                        fontSize: "0.78rem",
+                        color: "#4b5563",
+                      }}
+                    >
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div style={{ display: "grid", gap: 20, alignSelf: "stretch" }}>
+            {coreModules.slice(3).map((m, idx) => (
+              <motion.div
+                key={m.label}
+                variants={fadeUp}
+                whileHover={{
+                  y: -4,
+                  boxShadow: "0 20px 50px rgba(15,23,42,0.12)",
+                  borderColor: COLOR.primarySoft,
+                }}
+                style={{
+                  borderRadius: 22,
+                  padding: 20,
+                  background: COLOR.bgWhite,
+                  border: `1px solid ${COLOR.border}`,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "1.12rem",
-                    fontWeight: 700,
-                    color: COLOR.textDark,
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    width: 60,
+                    height: 60,
+                    background:
+                      "linear-gradient(135deg,transparent 50%,rgba(169,36,39,0.06) 50%)",
+                    borderTopRightRadius: 22,
                   }}
-                >
-                  {m.label}
-                </div>
-                <span
+                />
+                <div
                   style={{
-                    padding: "4px 8px",
-                    borderRadius: 999,
-                    fontSize: "0.72rem",
-                    background: COLOR.bgSoft,
-                    color: "#6b7280",
-                    fontWeight: 500,
-                    whiteSpace: "nowrap",
+                    width: 36,
+                    height: 36,
+                    borderRadius: 14,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      "linear-gradient(135deg,rgba(169,36,39,0.06),rgba(169,36,39,0.02))",
+                    color: COLOR.primary,
+                    marginBottom: 4,
                   }}
                 >
-                  {m.tag}
-                </span>
-              </div>
-
-              <p
-                style={{
-                  fontSize: "0.9rem",
-                  color: COLOR.textSoft,
-                  lineHeight: 1.6,
-                }}
-              >
-                {m.desc}
-              </p>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 6,
-                  marginTop: 4,
-                }}
-              >
-                {m.chips.map((chip) => (
-                  <span
-                    key={chip}
+                  {m.icon}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: COLOR.primary,
+                    marginBottom: 4,
+                  }}
+                >
+                  Module {3 + idx + 1}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <div
                     style={{
-                      padding: "3px 8px",
-                      borderRadius: 999,
-                      background: "#f9fafb",
-                      border: `1px solid ${COLOR.border}`,
-                      fontSize: "0.78rem",
-                      color: "#4b5563",
+                      fontSize: "1.12rem",
+                      fontWeight: 760,
+                      color: COLOR.textDark,
                     }}
                   >
-                    {chip}
+                    {m.label}
+                  </div>
+                  <span
+                    style={{
+                      padding: "4px 8px",
+                      borderRadius: 999,
+                      fontSize: "0.72rem",
+                      background: COLOR.bgSoft,
+                      color: "#6b7280",
+                      fontWeight: 500,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {m.tag}
                   </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: COLOR.textSoft,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {m.desc}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 6,
+                    marginTop: 4,
+                  }}
+                >
+                  {m.chips.map((chip) => (
+                    <span
+                      key={chip}
+                      style={{
+                        padding: "3px 8px",
+                        borderRadius: 999,
+                        background: "#f9fafb",
+                        border: `1px solid ${COLOR.border}`,
+                        fontSize: "0.78rem",
+                        color: "#4b5563",
+                      }}
+                    >
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
   );
 
-  // small highlight style reused here
-  const stylesHighlight = {
-    background: "linear-gradient(135deg,#a92427,#d63447,#ff7a7a)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
-  };
-
   // --------------------------
-  // ARCHITECTURE / DATA MODEL SECTION
+  // ARCHITECTURE SECTION (content preserved)
   // --------------------------
 
   const ArchitectureSection = () => (
@@ -837,7 +1423,7 @@ export default function HRMSProductPage() {
           }}
           data-two-col
         >
-          {/* Left narrative column */}
+          {/* Left narrative */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -926,7 +1512,7 @@ export default function HRMSProductPage() {
             </div>
           </motion.div>
 
-          {/* Right visual architecture diagram */}
+          {/* Right dark visual */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -978,7 +1564,7 @@ export default function HRMSProductPage() {
               A layered graph of entities, rules and events.
             </div>
 
-            {/* Top layer: Countries / Entities */}
+            {/* Top layer */}
             <div
               style={{
                 display: "flex",
@@ -1017,7 +1603,7 @@ export default function HRMSProductPage() {
               ))}
             </div>
 
-            {/* Middle layer: Locations / Grades / Policies */}
+            {/* Middle layer */}
             <div
               style={{
                 display: "grid",
@@ -1064,7 +1650,7 @@ export default function HRMSProductPage() {
               ))}
             </div>
 
-            {/* Center policy engine */}
+            {/* Policy engine */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               style={{
@@ -1097,7 +1683,7 @@ export default function HRMSProductPage() {
               </div>
             </motion.div>
 
-            {/* Bottom layer: Events that hit the engine */}
+            {/* Bottom layer */}
             <div
               style={{
                 display: "grid",
@@ -1150,9 +1736,9 @@ export default function HRMSProductPage() {
       </div>
     </section>
   );
-  // --------------- END OF MESSAGE 2 ---------------
+
   // ================================
-  // PAYROLL TAGS + RAIL DATA
+  // PAYROLL DATA & RUN STEPS
   // ================================
 
   const payrollTags = [
@@ -1194,10 +1780,10 @@ export default function HRMSProductPage() {
     },
   ];
 
-  const [railIndex, setRailIndex] = React.useState(0);
+  const [railIndex, setRailIndex] = useState(0);
 
   // ================================
-  // DEEP PAYROLL SUITE SECTION
+  // PAYROLL DEEP DIVE SECTION
   // ================================
 
   const PayrollDeepDive = () => (
@@ -1210,7 +1796,6 @@ export default function HRMSProductPage() {
       }}
     >
       <div style={page.container}>
-        {/* header */}
         <div style={{ textAlign: "center", marginBottom: 50 }}>
           <h2
             style={{
@@ -1240,7 +1825,6 @@ export default function HRMSProductPage() {
           </p>
         </div>
 
-        {/* Two-column layout */}
         <div
           style={{
             display: "grid",
@@ -1250,7 +1834,7 @@ export default function HRMSProductPage() {
           }}
           data-two-col
         >
-          {/* LEFT: Narrative + Tags */}
+          {/* LEFT narrative */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -1311,7 +1895,6 @@ export default function HRMSProductPage() {
               </li>
             </ul>
 
-            {/* TAGS */}
             <div
               style={{
                 display: "flex",
@@ -1338,7 +1921,7 @@ export default function HRMSProductPage() {
             </div>
           </motion.div>
 
-          {/* RIGHT DARK PANEL */}
+          {/* RIGHT dark rail card */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -1347,8 +1930,7 @@ export default function HRMSProductPage() {
             style={{
               borderRadius: 26,
               padding: 24,
-              background:
-                "radial-gradient(circle at top left,#1f2937,#0a0f1d,#020617)",
+              background: "radial-gradient(circle at top left,#1f2937,#020617)",
               color: "white",
               boxShadow: "0 26px 60px rgba(15,23,42,0.55)",
               position: "relative",
@@ -1365,7 +1947,6 @@ export default function HRMSProductPage() {
               }}
             />
 
-            {/* Header */}
             <div
               style={{
                 fontSize: "0.8rem",
@@ -1403,7 +1984,7 @@ export default function HRMSProductPage() {
               compliance-ready audit trail.
             </p>
 
-            {/* INTERACTIVE STEP BUTTONS */}
+            {/* Step buttons */}
             <div
               style={{
                 display: "flex",
@@ -1441,7 +2022,7 @@ export default function HRMSProductPage() {
               ))}
             </div>
 
-            {/* STEP DETAILS */}
+            {/* Step content */}
             <motion.div
               key={railIndex}
               initial={{ opacity: 0, y: 20 }}
@@ -1475,7 +2056,6 @@ export default function HRMSProductPage() {
               </div>
             </motion.div>
 
-            {/* Footer line */}
             <div
               style={{
                 marginTop: 14,
@@ -1494,9 +2074,9 @@ export default function HRMSProductPage() {
       </div>
     </section>
   );
-  // --------------- END OF MESSAGE 3 ----------------
+
   // ==============================================
-  // DATA FLOW ITEMS
+  // DATA FLOW SECTION (same content, new layout)
   // ==============================================
 
   const flowItems = [
@@ -1526,10 +2106,6 @@ export default function HRMSProductPage() {
       icon: <BarChart3 size={18} />,
     },
   ];
-
-  // ==============================================
-  // DATA FLOW SECTION
-  // ==============================================
 
   const DataFlowSection = () => (
     <section style={page.tight}>
@@ -1569,6 +2145,7 @@ export default function HRMSProductPage() {
             justifyContent: "space-between",
             alignItems: "stretch",
           }}
+          data-flow-grid
         >
           {flowItems.map((f, idx) => (
             <React.Fragment key={f.title}>
@@ -1625,7 +2202,6 @@ export default function HRMSProductPage() {
                 </div>
               </motion.div>
 
-              {/* Arrow */}
               {idx < flowItems.length - 1 && (
                 <div
                   style={{
@@ -1645,7 +2221,7 @@ export default function HRMSProductPage() {
   );
 
   // ==============================================
-  // AI + AUTOMATION INTELLIGENCE SECTION
+  // AI + AUTOMATION SECTION (content preserved)
   // ==============================================
 
   const aiPoints = [
@@ -1702,7 +2278,6 @@ export default function HRMSProductPage() {
           </p>
         </div>
 
-        {/* AI Grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -1713,6 +2288,7 @@ export default function HRMSProductPage() {
             gridTemplateColumns: "repeat(2,minmax(0,1fr))",
             gap: 24,
           }}
+          data-ai-grid
         >
           {aiPoints.map((p, idx) => (
             <motion.div
@@ -1776,7 +2352,7 @@ export default function HRMSProductPage() {
   );
 
   // ==============================================
-  // DEVICE & INTEGRATION LAYER
+  // DEVICE & INTEGRATION LAYER (content preserved)
   // ==============================================
 
   const deviceBlocks = [
@@ -1843,7 +2419,6 @@ export default function HRMSProductPage() {
           </p>
         </div>
 
-        {/* Device Grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -1854,6 +2429,7 @@ export default function HRMSProductPage() {
             gridTemplateColumns: "repeat(3,minmax(0,1fr))",
             gap: 24,
           }}
+          data-integration-grid
         >
           {deviceBlocks.map((b, idx) => (
             <motion.div
@@ -1918,9 +2494,8 @@ export default function HRMSProductPage() {
     </section>
   );
 
-  // ------------- END OF MESSAGE 4 -------------
   // ==============================================
-  // PERSONA VALUE BLOCKS
+  // PERSONAS SECTION (content preserved)
   // ==============================================
 
   const personas = [
@@ -2059,7 +2634,7 @@ export default function HRMSProductPage() {
   );
 
   // ==============================================
-  // METRICS STRIP
+  // METRICS SECTION (content preserved)
   // ==============================================
 
   const metrics = [
@@ -2162,7 +2737,129 @@ export default function HRMSProductPage() {
   );
 
   // ==============================================
-  // CTA SECTION
+  // ROLLOUT JOURNEY SECTION (NEW)
+  // ==============================================
+
+  const rolloutSteps = [
+    {
+      title: "1. Discovery & policy mapping",
+      desc: "We map your current HR, attendance, leave and payroll policies — and the exceptions you actually deal with.",
+    },
+    {
+      title: "2. Configuration & simulation",
+      desc: "Policies, structures and workflows are configured in Kernn, then tested on historical data for accuracy.",
+    },
+    {
+      title: "3. Parallel runs & training",
+      desc: "We run Kernn alongside your existing process so HR, payroll & finance teams gain confidence and muscle memory.",
+    },
+    {
+      title: "4. Go-live & continuous tuning",
+      desc: "Switch to Kernn as source of truth — with monitoring, ongoing rule tuning and new automations every month.",
+    },
+  ];
+
+  const RolloutSection = () => (
+    <section
+      style={{
+        ...page.section,
+        background: "linear-gradient(135deg,#111827,#020617)",
+        color: "white",
+      }}
+    >
+      <div style={page.container}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <h2
+            style={{
+              fontSize: "2.3rem",
+              fontWeight: 820,
+              letterSpacing: "-0.9px",
+            }}
+          >
+            From messy reality to{" "}
+            <span style={stylesHighlight}>live HR operating system</span>.
+          </h2>
+          <p
+            style={{
+              fontSize: "1.02rem",
+              color: "#e5e7eb",
+              maxWidth: 680,
+              margin: "0 auto",
+              lineHeight: 1.7,
+            }}
+          >
+            Kernn doesn&apos;t ask you to start from scratch. We begin where you
+            are — and move you to a fully modeled, auditable HRMS in deliberate,
+            safe steps.
+          </p>
+        </div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4,minmax(0,1fr))",
+            gap: 20,
+          }}
+          data-rollout-grid
+        >
+          {rolloutSteps.map((step, idx) => (
+            <motion.div
+              key={step.title}
+              variants={fadeUp}
+              whileHover={{
+                y: -4,
+                boxShadow: "0 22px 50px rgba(0,0,0,0.6)",
+              }}
+              style={{
+                borderRadius: 22,
+                padding: 20,
+                background:
+                  "radial-gradient(circle at top left,rgba(248,250,252,0.08),rgba(15,23,42,1))",
+                border: "1px solid rgba(148,163,184,0.4)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#9ca3af",
+                  marginBottom: 6,
+                }}
+              >
+                Phase {idx + 1}
+              </div>
+              <div
+                style={{
+                  fontSize: "1.02rem",
+                  fontWeight: 700,
+                  marginBottom: 8,
+                }}
+              >
+                {step.title}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.88rem",
+                  color: "#e5e7eb",
+                  lineHeight: 1.6,
+                }}
+              >
+                {step.desc}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+
+  // ==============================================
+  // CTA SECTION (final)
   // ==============================================
 
   const CTASection = () => (
@@ -2270,12 +2967,13 @@ export default function HRMSProductPage() {
   );
 
   // ==============================================
-  // PAGE RENDER (Final Assembly)
+  // PAGE RENDER
   // ==============================================
 
   return (
     <div style={page.root}>
       <Hero />
+      <StorySection />
       <CoreModulesSection />
       <ArchitectureSection />
       <PayrollDeepDive />
@@ -2284,6 +2982,7 @@ export default function HRMSProductPage() {
       <IntegrationSection />
       <PersonaSection />
       <MetricsSection />
+      <RolloutSection />
       <CTASection />
       <Footer />
 
@@ -2293,28 +2992,40 @@ export default function HRMSProductPage() {
           section {
             padding: 80px 20px !important;
           }
+          section[id="story"] {
+            padding-top: 70px !important;
+          }
         }
         @media (max-width: 880px) {
           div[data-two-col] {
             grid-template-columns: minmax(0, 1fr) !important;
           }
-          div[data-core-modules] {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+          section:first-of-type > div > div {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 40px !important;
           }
         }
-        @media (max-width: 720px) {
-          div[data-core-modules],
+        @media (max-width: 768px) {
+          div[data-story-grid],
+          div[data-core-modules-grid],
+          div[data-ai-grid],
           div[data-persona-grid],
-          div[data-metric-grid] {
+          div[data-metric-grid],
+          div[data-integration-grid],
+          div[data-rollout-grid] {
             grid-template-columns: minmax(0, 1fr) !important;
           }
           div[data-flow-grid] {
-            grid-template-columns: minmax(0, 1fr) !important;
+            flex-direction: column !important;
+          }
+        }
+        @media (max-width: 640px) {
+          h1 {
+            font-size: 2.2rem !important;
           }
         }
       `}</style>
     </div>
   );
 }
-
-// -------------- END OF MESSAGE 5/5 --------------
