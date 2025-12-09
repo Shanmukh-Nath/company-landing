@@ -42,7 +42,7 @@ export default function Header() {
   const isMobile = useMediaQuery("(max-width:900px)");
 
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbzMSlQUHq-lKZdVQwf3BwA7fiEPR9wBI38z66kluIeAV465w_hWOLTx2H3euwRGRaPK/exec";
+    "https://script.google.com/macros/s/AKfycbyoOBwhhiqd4sv_-YfG6LX4mrg7SW3D7Pm9USQ-hPt1LpEBBjB46MpqWdA2qElpnmJWxg/exec";
 
   // preserved original states
   const [isScrolled, setIsScrolled] = useState(false);
