@@ -16,3 +16,4 @@ echo "Pushing updated main..."
 git push origin main
 
 echo "Merge complete!"
+git switch dev
