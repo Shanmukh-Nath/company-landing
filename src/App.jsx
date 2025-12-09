@@ -1,4 +1,4 @@
-import Header from "./components/header";
+import Header from "./components/Header";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import OpscaleERPNexus from "./pages/products/opscale";
