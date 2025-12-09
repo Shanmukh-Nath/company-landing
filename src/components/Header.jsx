@@ -28,11 +28,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { motion, AnimatePresence } from "framer-motion";
 
 import companyLogo from "../assets/smallLogo.png";
-import milkDairyImg from "../assets/milk-dairy.jpg";
-import hrmsImg from "../assets/hrms.jpg";
-import inventoryImg from "../assets/inventory.jpg";
-import scmImg from "../assets/scm.jpg";
-import bpoImg from "../assets/bpo.jpg";
+import milkDairyImg from "../assets/productImages/milk-dairy.jpg";
+import hrmsImg from "../assets/productImages/hrms.jpg";
+import inventoryImg from "../assets/productImages/inventory.jpg";
+import scmImg from "../assets/productImages/scm.jpg";
+import bpoImg from "../assets/productImages/bpo.jpg";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -109,7 +109,7 @@ export default function Header() {
       hasPreview: true,
       submenu: [
         {
-          label: "Milk Dairy Management System",
+          label: "Opscale",
           path: "/products/mdms",
           image: milkDairyImg,
           description:

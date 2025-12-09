@@ -1,4 +1,5 @@
 import { color, motion } from "framer-motion";
+import React from "react";
 import { useEffect, useState } from "react";
 import {
   CheckCircle,
@@ -26,6 +27,8 @@ import {
   CreditCard,
   Milk,
 } from "lucide-react";
+
+import Opscale from "../../assets/productLogos/opscale.png";
 
 export default function MilkDairyManagement() {
   const [activeModule, setActiveModule] = useState(null);
@@ -449,15 +452,18 @@ export default function MilkDairyManagement() {
     fontSize: "clamp(2.8rem, 6vw, 4rem)",
     fontWeight: 900,
     marginBottom: 24,
-    height: "1.2em",
 
-    // 🌈 Stronger, more vibrant premium gradient
+    display: "inline-block",
+    width: "100%",
+    lineHeight: "1.1",
+    padding: "0.2em 0",
+
+    // 🌈 Strong gradient
     background:
       "linear-gradient(135deg, #ffffff 0%, #f3f5ff 30%, #e4c6ff 60%, #ffb7ff 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
 
-    // 🌟 Stronger glow for dark night sky
     textShadow: `
     0 0 12px rgba(255, 255, 255, 0.35),
     0 0 22px rgba(200, 150, 255, 0.25),
@@ -489,9 +495,14 @@ export default function MilkDairyManagement() {
     background:
       "linear-gradient(135deg, rgba(255,255,255,0.18), rgba(180,180,255,0.14))",
     borderRadius: 36,
-    padding: 26,
+    padding: 24,
     border: "1px solid rgba(255,255,255,0.12)",
     boxShadow: "0 8px 40px rgba(0,0,0,0.45)",
+    width: 120, // ⭐ slightly bigger than before
+    height: 120,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 
   /* ------ STATS ------ */
@@ -618,8 +629,6 @@ export default function MilkDairyManagement() {
     background: "linear-gradient(180deg, white, transparent)",
     opacity: 0.9,
   };
-
-  /* ANIMATIONS unchanged */
 
   /* ---------------- ANIMATIONS (unchanged) ---------------- */
 
@@ -750,6 +759,7 @@ export default function MilkDairyManagement() {
 
         {/* Premium Grid Overlay */}
         <div style={premiumGridOverlay} />
+
         {/* 🌌 STAR FIELD LAYER */}
         <div style={floatingLayerStyle}>
           {/* ⭐ Static Twinkling Stars */}
@@ -786,29 +796,56 @@ export default function MilkDairyManagement() {
             />
           ))}
 
-          {/* 🌠 Shooting Stars */}
-          {shootingStars.map((s) => (
-            <motion.div
-              key={"shoot-" + s.id}
-              style={shootingStarStyle}
-              initial={{
-                x: `${s.startX}%`,
-                y: `${s.startY}%`,
-                opacity: 0,
-              }}
-              animate={{
-                x: `${s.endX}%`,
-                y: `${s.endY}%`,
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: s.duration,
-                repeat: Infinity,
-                delay: s.delay,
-                ease: "easeOut",
-              }}
-            />
-          ))}
+          {/* 🌠 Shooting Stars (Correct Opposite Tails) */}
+          {shootingStars.map((s) => {
+            const dx = s.endX - s.startX;
+            const dy = s.endY - s.startY;
+
+            // Angle in degrees for movement
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+            // Tail angle must face the opposite direction
+            const tailAngle = angle + 270;
+
+            // Tail length proportional to movement distance
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            return (
+              <motion.div
+                key={"shoot-" + s.id}
+                style={{
+                  position: "absolute",
+                  top: `${s.startY}%`,
+                  left: `${s.startX}%`,
+
+                  // The ★ tail
+                  width: 2,
+                  height: distance * 0.45, // subtle but visible
+                  background: "linear-gradient(to top, white, transparent)",
+                  borderRadius: 2,
+                  opacity: 0.6,
+
+                  // ⭐ rotate trail in opposite direction
+                  transform: `rotate(${tailAngle}deg)`,
+
+                  // ⭐ tail grows behind the star
+                  transformOrigin: "bottom left",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{
+                  top: [`${s.startY}%`, `${s.endY}%`],
+                  left: [`${s.startX}%`, `${s.endX}%`],
+                  opacity: [0, 1, 0.2],
+                }}
+                transition={{
+                  duration: s.duration,
+                  repeat: Infinity,
+                  delay: s.delay,
+                  ease: "easeOut",
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* ---------------- CONTENT ---------------- */}
@@ -849,7 +886,17 @@ export default function MilkDairyManagement() {
               }}
               style={iconInner}
             >
-              <Milk style={{ width: 36, height: 36, color: "white" }} />
+              <img
+                src={Opscale}
+                alt="Milk Dairy"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  objectFit: "contain",
+                  transform: "scale(1.35)", // ⭐ zoom in
+                  transformOrigin: "center", // keep perfectly centered
+                }}
+              />
             </motion.div>
           </motion.div>
 
