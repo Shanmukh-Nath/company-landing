@@ -115,7 +115,7 @@ export default function Header() {
           description:
             "Streamline dairy operations with automated milk collection, quality testing, and farmer payments.",
         },
-        {
+        /*{
           label: "HRMS",
           path: "/products/hrms",
           image: hrmsImg,
@@ -135,7 +135,7 @@ export default function Header() {
           image: scmImg,
           description:
             "Optimize logistics, supplier relationships, and procurement processes end-to-end.",
-        },
+        },*/
       ],
     },
     {
