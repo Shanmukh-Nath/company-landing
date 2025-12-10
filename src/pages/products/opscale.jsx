@@ -31,7 +31,7 @@ import {
 
 import Footer from "../../components/Footer";
 
-import Opscale from "../../assets/productLogos/opscale.png";
+import Opscale from "../../assets/productLogos/opsacle-logo-2.svg";
 
 export default function OpscaleERPNexus() {
   const [activeModule, setActiveModule] = useState(null);
