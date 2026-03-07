@@ -4,29 +4,33 @@ import Home from "./pages/Home";
 import OpscaleERPNexus from "./pages/products/opscale";
 import HRMSProductPage from "./pages/products/hrms";
 import BpoServices from "./pages/services/bpo";
+import PrivacyPolicy from "./pages/legals/PrivacyPolicy";
 import { useEffect } from "react";
+import TermsOfService from "./pages/legals/TermsOfService";
+import RefundPolicy from "./pages/legals/RefundPolicy";
 
 export default function App() {
   const location = useLocation();
   const isFullPageRoute =
-    location.pathname === "/products/opsacle" ||
-    location.pathname === "/products/hrms";
-  useEffect(() => {
-    let timeout;
+    location.pathname === "/products/opscale" ||
+    location.pathname === "/products/hrms" ||
+    location.pathname === "/services/bpo" ||
+    useEffect(() => {
+      let timeout;
 
-    const handleScroll = () => {
-      document.body.classList.add("scrolling");
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        document.body.classList.remove("scrolling");
-      }, 1000);
-    };
+      const handleScroll = () => {
+        document.body.classList.add("scrolling");
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          document.body.classList.remove("scrolling");
+        }, 1000);
+      };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, []);
 
   return (
     <>
@@ -38,6 +42,10 @@ export default function App() {
           <Route path="/products/opscale" element={<OpscaleERPNexus />} />
           <Route path="/products/hrms" element={<HRMSProductPage />} />
           <Route path="/services/bpo" element={<BpoServices />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<Home />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
         </Routes>
       </div>
     </>

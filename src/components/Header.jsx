@@ -60,6 +60,7 @@ export default function Header() {
   const productsRef = useRef(null);
   const servicesRef = useRef(null);
   const careersRef = useRef(null);
+  const legalsRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -169,6 +170,19 @@ export default function Header() {
         { label: "Verify Documents", link: "https://docs.kernn.ai" },
       ],
     },
+    {
+      label: "Legals",
+      ref: legalsRef,
+      hasPreview: false,
+      submenu: [
+        { label: "Privacy Policy", path: "/privacy-policy" },
+        {
+          label: "Terms of Service",
+          path: "/terms-of-service",
+        },
+        { label: "Refund Policy", path: "/refund-policy" },
+      ],
+    },
   ];
 
   // Behaviors: don't open popper on mobile — use Drawer instead
@@ -275,12 +289,17 @@ export default function Header() {
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
 
       alert("Thank you! Your enquiry has been submitted.");
       setContactOpen(false);
     } catch (err) {
+      console.log(err);
       alert("Error sending your request. Please try again.");
     }
   };
