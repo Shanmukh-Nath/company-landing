@@ -106,6 +106,11 @@ export default function PrivacyPolicy() {
   const [copied, setCopied] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [printLoading, setPrintLoading] = useState(false);
+  const [printMode, setPrintMode] = useState(false);
+  const [printMeta, setPrintMeta] = useState({
+    ip: "Loading...",
+    time: "",
+  });
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -122,12 +127,27 @@ export default function PrivacyPolicy() {
     return () => obs.disconnect();
   }, []);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrintLoading(true);
+    setPrintMode(true);
+
+    let ip = "Unknown";
+
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      ip = data.ip;
+    } catch {}
+
+    const time = new Date().toLocaleString();
+
+    setPrintMeta({ ip, time });
+
     setTimeout(() => {
       window.print();
+      setPrintMode(false);
       setPrintLoading(false);
-    }, 300);
+    }, 500);
   };
 
   const handleShare = async () => {
@@ -414,16 +434,178 @@ export default function PrivacyPolicy() {
           .pp-article { padding: 0 20px 60px !important; }
           .pp-overview-grid { grid-template-columns: 1fr 1fr !important; }
           .pp-contact-grid { grid-template-columns: 1fr 1fr !important; }
+          main {
+    margin-left: 0 !important;
+  width: 100% !important;
+}
+
+.pp-article {
+  padding: 0 18px 60px !important;
+}
+
+.pp-header {
+  padding: 36px 20px 30px !important;
+}
+
+.pp-overview-grid {
+  grid-template-columns: 1fr !important;
+}
+
+.pp-contact-grid {
+  grid-template-columns: 1fr !important;
+}
+  table {
+  display: block;
+  overflow-x: auto;
+}
         }
         @media (max-width: 520px) {
           .pp-overview-grid { grid-template-columns: 1fr !important; }
           .pp-contact-grid { grid-template-columns: 1fr !important; }
           .pp-meta-bar { flex-wrap: wrap !important; }
         }
+          /* ================= PRINT LEGAL DOCUMENT ================= */
+
+@page {
+  size: A4;
+  margin: 28mm 22mm 28mm 22mm;
+}
+
+.print-mode * {
+  color: #000 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.print-mode .pp-sidebar,
+.print-mode .pp-actions-bar,
+.print-mode .pp-mob-toggle,
+.print-mode button {
+  display: none !important;
+}
+
+.print-mode main {
+  margin-left: 0 !important;
+}
+
+.print-mode .pp-header {
+  background: none !important;
+  padding: 0 !important;
+  margin-bottom: 30px;
+}
+
+.print-mode h1 {
+  font-size: 32px !important;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+}
+
+.print-mode h1 span {
+  -webkit-text-fill-color: #000 !important;
+  color: #000 !important;
+  background: none !important;
+}
+
+.print-mode h2 {
+  font-family: "Times New Roman", serif;
+  font-size: 18px !important;
+  margin-top: 28px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 6px;
+}
+
+.print-mode h3 {
+  font-family: "Times New Roman", serif;
+  font-size: 15px;
+  margin-top: 16px;
+}
+
+.print-mode p,
+.print-mode li {
+  font-family: "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.7;
+}
+  
+
+.print-mode table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11pt;
+}
+
+.print-mode table th,
+.print-mode table td {
+  border: 1px solid #000;
+  padding: 6px 8px;
+}
+
+.print-mode .pp-article {
+  padding: 0 !important;
+}
+
+.print-mode section {
+  page-break-inside: avoid;
+}
+  /* -------- Legal Footer -------- */
+
+.pp-print-meta {
+  display: none;
+}
+
+.print-mode .pp-print-meta {
+  display: block;
+  position: fixed;
+  bottom: 5mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+  font-size: 9pt;
+  color: #333;
+}
+
+/* -------- Page Numbers -------- */
+
+@page {
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 9pt;
+    font-family: "Times New Roman", serif;
+  }
+}
+
+/* -------- Watermark -------- */
+
+.print-mode::before {
+  content: "Kernn Automations Confidential";
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 70px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.1);
+  pointer-events: none;
+  z-index: 100;
+}
+  .print-mode::after {
+  content: "Kernn Automations Private Limited — Privacy Policy";
+  position: fixed;
+  top: 100mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9pt;
+  font-family: "Times New Roman", serif;
+  color: #333;
+  opacity: 0.6;
+}
       `}</style>
 
       {/* ═══ ROOT ═══════════════════════════════════════════════════════════ */}
       <div
+        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -568,9 +750,15 @@ export default function PrivacyPolicy() {
           style={{
             flex: 1,
             minWidth: 0,
-            marginLeft: 268,
+            marginLeft: window.innerWidth <= 900 ? 0 : 268,
           }}
         >
+          {printMode && (
+            <div className="pp-print-meta">
+              Printed by: {printMeta.ip} | Generated: {printMeta.time} |
+              Document: Kernn Privacy Policy
+            </div>
+          )}
           {/* ── HERO ── */}
           <header
             className="pp-header"

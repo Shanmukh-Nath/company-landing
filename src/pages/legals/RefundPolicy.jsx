@@ -97,6 +97,11 @@ export default function RefundPolicy() {
   const [copied, setCopied] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [printLoading, setPrintLoading] = useState(false);
+  const [printMode, setPrintMode] = useState(false);
+  const [printMeta, setPrintMeta] = useState({
+    ip: "",
+    time: "",
+  });
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -113,12 +118,30 @@ export default function RefundPolicy() {
     return () => obs.disconnect();
   }, []);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrintLoading(true);
+    setPrintMode(true);
+
+    let ip = "Unknown";
+
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      ip = data.ip;
+    } catch {}
+
+    const time = new Date().toLocaleString();
+
+    setPrintMeta({
+      ip,
+      time,
+    });
+
     setTimeout(() => {
       window.print();
+      setPrintMode(false);
       setPrintLoading(false);
-    }, 300);
+    }, 500);
   };
 
   const handleShare = async () => {
@@ -342,12 +365,79 @@ export default function RefundPolicy() {
   return (
     <>
       <style>{`
-        @media print {
-          .no-print { display: none !important; }
-          .rp-sidebar { display: none !important; }
-          .rp-article { padding: 20px !important; }
-          h2 { page-break-after: avoid; }
-        }
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* ================= PRINT DOCUMENT MODE ================= */
+
+@page {
+  size: A4;
+  margin: 30mm 22mm 25mm 22mm;
+
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-family: "Times New Roman", serif;
+    font-size: 9pt;
+    color: #333;
+  }
+}
+
+.print-mode * {
+  box-shadow: none !important;
+}
+
+.print-mode .rp-sidebar,
+.print-mode .rp-actions-bar,
+.print-mode .rp-mob-toggle {
+  display: none !important;
+}
+
+.print-mode main {
+  margin-left: 0 !important;
+}
+
+.print-mode .rp-header {
+  background: none !important;
+  color: #000 !important;
+}
+
+.print-mode h1,
+.print-mode h2,
+.print-mode h3,
+.print-mode p,
+.print-mode span,
+.print-mode li {
+  color: #000 !important;
+}
+
+.print-mode .rp-meta-bar div {
+  color: #000 !important;
+  background: none !important;
+  border: 1px solid #ccc !important;
+}
+
+.print-mode .rp-header p {
+  color: #000 !important;
+}
+
+.print-mode table th,
+.print-mode table td {
+  color: #000 !important;
+}
+
+.print-mode h1 span {
+  -webkit-text-fill-color: #000 !important;
+  color: #000 !important;
+}
+
+.print-mode section {
+  page-break-inside: avoid;
+}
+
+.print-mode .rp-article {
+  padding: 0 !important;
+}
         .rp-sidebar-item:hover { background: ${ACCENT_LIGHT} !important; }
         .rp-sidebar-item.active { background: ${ACCENT_LIGHT} !important; color: ${ACCENT} !important; border-color: ${ACCENT_BDR} !important; }
         .rp-btn-print:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
@@ -356,6 +446,17 @@ export default function RefundPolicy() {
         .rp-overview-card:hover { transform: translateY(-4px) !important; box-shadow: 0 10px 32px rgba(169,36,39,0.12) !important; border-color: ${ACCENT_BDR} !important; }
         .rp-share-opt:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
         .rp-copy-btn.copied { background: #1e6e3f !important; }
+        main {
+  margin-left: 0 !important;
+}
+
+.rp-article {
+  padding: 0 20px 60px !important;
+}
+
+.rp-header {
+  padding: 40px 20px 32px !important;
+}
         @media (max-width: 900px) {
           .rp-sidebar { position: fixed !important; left: 0; top: 80px; height: calc(100vh - 80px) !important; transform: translateX(-100%); transition: transform 0.25s cubic-bezier(.4,0,.2,1); z-index: 250; box-shadow: 6px 0 40px rgba(0,0,0,0.14); }
           .rp-sidebar.open { transform: translateX(0) !important; }
@@ -367,15 +468,83 @@ export default function RefundPolicy() {
           .rp-overview-grid { grid-template-columns: 1fr 1fr !important; }
           .rp-contact-grid { grid-template-columns: 1fr 1fr !important; }
         }
+          @media (max-width: 900px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
         @media (max-width: 520px) {
           .rp-overview-grid { grid-template-columns: 1fr !important; }
           .rp-contact-grid { grid-template-columns: 1fr !important; }
           .rp-meta-bar { flex-wrap: wrap !important; }
         }
+          .print-mode .rp-article {
+  padding: 0 !important;
+}
+  /* PRINT FOOTER */
+
+/* PRINT HEADER */
+
+.rp-print-header {
+  display: none;
+}
+
+.print-mode .rp-print-header {
+  display: block;
+  position: fixed;
+  top: 8mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+  font-size: 11pt;
+  font-weight: 700;
+  color: #000;
+}
+
+/* PRINT FOOTER */
+
+.rp-print-meta {
+  display: none;
+}
+
+.print-mode .rp-print-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 8mm;
+  left: 22mm;
+  right: 22mm;
+  font-family: "Times New Roman", serif;
+  font-size: 9pt;
+  color: #333;
+}
+
+/* PAGE NUMBERS */
+
+
+
+/* WATERMARK */
+
+.print-mode::before {
+  content: "Kernn Automations Confidential";
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 70px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.1);
+  pointer-events: none;
+  z-index: 100;
+}
       `}</style>
 
       {/* ═══ ROOT ══════════════════════════════════════════════════════════ */}
       <div
+        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -513,6 +682,18 @@ export default function RefundPolicy() {
 
         {/* ═══ MAIN ══════════════════════════════════════════════════════ */}
         <main style={{ flex: 1, minWidth: 0, marginLeft: 268 }}>
+          {printMode && (
+            <>
+              <div className="rp-print-header">
+                Kernn Automations Private Limited — Refund Policy
+              </div>
+
+              <div className="rp-print-meta">
+                Printed from IP: {printMeta.ip} | Generated: {printMeta.time}
+                <span className="rp-print-pages"></span>
+              </div>
+            </>
+          )}
           {/* ── HERO ── */}
           <header
             className="rp-header"

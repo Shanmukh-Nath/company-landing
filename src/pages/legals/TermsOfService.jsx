@@ -121,6 +121,12 @@ export default function TermsOfService() {
   const [copied, setCopied] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [printLoading, setPrintLoading] = useState(false);
+  const [printMode, setPrintMode] = useState(false);
+
+  const [printMeta, setPrintMeta] = useState({
+    ip: "",
+    time: "",
+  });
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -137,12 +143,30 @@ export default function TermsOfService() {
     return () => obs.disconnect();
   }, []);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrintLoading(true);
+    setPrintMode(true);
+
+    let ip = "Unknown";
+
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      ip = data.ip;
+    } catch {}
+
+    const time = new Date().toLocaleString();
+
+    setPrintMeta({
+      ip,
+      time,
+    });
+
     setTimeout(() => {
       window.print();
+      setPrintMode(false);
       setPrintLoading(false);
-    }, 300);
+    }, 500);
   };
 
   const handleShare = async () => {
@@ -366,12 +390,128 @@ export default function TermsOfService() {
   return (
     <>
       <style>{`
-        @media print {
-          .no-print { display: none !important; }
-          .tos-sidebar { display: none !important; }
-          .tos-article { padding: 20px !important; }
-          h2 { page-break-after: avoid; }
-        }
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* ===== PRINT DOCUMENT MODE ===== */
+
+@page {
+  size: A4;
+  margin: 30mm 22mm 25mm 22mm;
+
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-family: "Times New Roman", serif;
+    font-size: 9pt;
+    color: #333;
+  }
+}
+
+.print-mode * {
+  box-shadow: none !important;
+}
+
+/* hide UI */
+
+.print-mode .tos-sidebar,
+.print-mode .tos-actions-bar,
+.print-mode .tos-mob-toggle {
+  display: none !important;
+}
+
+.print-mode main {
+  margin-left: 0 !important;
+}
+
+/* text readability */
+
+.print-mode h1,
+.print-mode h2,
+.print-mode h3,
+.print-mode p,
+.print-mode span,
+.print-mode li {
+  color: #000 !important;
+}
+
+.print-mode .rp-meta-bar div {
+  color: #000 !important;
+  background: none !important;
+  border: 1px solid #ccc !important;
+}
+
+.print-mode .rp-header p {
+  color: #000 !important;
+}
+
+.print-mode table th,
+.print-mode table td {
+  color: #000 !important;
+}
+
+.print-mode .tos-header {
+  background: none !important;
+}
+
+/* metadata boxes */
+
+.print-mode .tos-meta-bar div {
+  background: none !important;
+  border: 1px solid #ccc !important;
+}
+
+/* header */
+
+.tos-print-header {
+  display: none;
+}
+
+.print-mode .tos-print-header {
+  display: block;
+  position: fixed;
+  top: 8mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+  font-size: 11pt;
+  font-weight: 700;
+}
+
+/* footer */
+
+.tos-print-meta {
+  display: none;
+}
+
+.print-mode .tos-print-meta {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 8mm;
+  left: 22mm;
+  right: 22mm;
+  font-family: "Times New Roman", serif;
+  font-size: 9pt;
+}
+
+/* page numbers */
+
+
+/* watermark */
+
+.print-mode::before {
+  content: "Kernn Automations Confidential";
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 70px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.1);
+  pointer-events: none;
+}
         .tos-sidebar-item:hover { background: ${ACCENT_LIGHT} !important; }
         .tos-sidebar-item.active { background: ${ACCENT_LIGHT} !important; color: ${ACCENT} !important; border-color: ${ACCENT_BDR} !important; }
         .tos-btn-print:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
@@ -380,7 +520,12 @@ export default function TermsOfService() {
         .tos-overview-card:hover { transform: translateY(-4px) !important; box-shadow: 0 10px 32px rgba(169,36,39,0.12) !important; border-color: ${ACCENT_BDR} !important; }
         .tos-share-opt:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
         .tos-copy-btn.copied { background: #1e6e3f !important; }
+
         @media (max-width: 900px) {
+
+  main {
+    margin-left: 0 !important;
+  }
           .tos-sidebar { position: fixed !important; left: 0; top: 80px; height: calc(100vh - 80px) !important; transform: translateX(-100%); transition: transform 0.25s cubic-bezier(.4,0,.2,1); z-index: 250; box-shadow: 6px 0 40px rgba(0,0,0,0.14); }
           .tos-sidebar.open { transform: translateX(0) !important; }
           .tos-mob-toggle { display: flex !important; }
@@ -396,10 +541,17 @@ export default function TermsOfService() {
           .tos-contact-grid { grid-template-columns: 1fr !important; }
           .tos-meta-bar { flex-wrap: wrap !important; }
         }
+          @media (max-width: 900px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
       `}</style>
 
       {/* ═══ ROOT ══════════════════════════════════════════════════════════ */}
       <div
+        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -543,6 +695,18 @@ export default function TermsOfService() {
             marginLeft: 268,
           }}
         >
+          {printMode && (
+            <>
+              <div className="tos-print-header">
+                Kernn Automations Private Limited — Terms of Service
+              </div>
+
+              <div className="tos-print-meta">
+                Printed from IP: {printMeta.ip} | Generated: {printMeta.time}
+                <span className="tos-print-pages"></span>
+              </div>
+            </>
+          )}
           {/* ── HERO ── */}
           <header
             className="tos-header"
