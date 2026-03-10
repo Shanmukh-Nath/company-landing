@@ -446,9 +446,7 @@ export default function RefundPolicy() {
         .rp-overview-card:hover { transform: translateY(-4px) !important; box-shadow: 0 10px 32px rgba(169,36,39,0.12) !important; border-color: ${ACCENT_BDR} !important; }
         .rp-share-opt:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
         .rp-copy-btn.copied { background: #1e6e3f !important; }
-        main {
-  margin-left: 0 !important;
-}
+
 
 .rp-article {
   padding: 0 20px 60px !important;
@@ -458,6 +456,9 @@ export default function RefundPolicy() {
   padding: 40px 20px 32px !important;
 }
         @media (max-width: 900px) {
+                main {
+  margin-left: 0 !important;
+}
           .rp-sidebar { position: fixed !important; left: 0; top: 80px; height: calc(100vh - 80px) !important; transform: translateX(-100%); transition: transform 0.25s cubic-bezier(.4,0,.2,1); z-index: 250; box-shadow: 6px 0 40px rgba(0,0,0,0.14); }
           .rp-sidebar.open { transform: translateX(0) !important; }
           .rp-mob-toggle { display: flex !important; }
