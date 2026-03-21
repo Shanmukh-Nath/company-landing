@@ -44,17 +44,13 @@ export default function Header() {
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbyoOBwhhiqd4sv_-YfG6LX4mrg7SW3D7Pm9USQ-hPt1LpEBBjB46MpqWdA2qElpnmJWxg/exec";
 
-  // preserved original states
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoverMenu, setHoverMenu] = useState("");
   const [clickedMenu, setClickedMenu] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [logoHover, setLogoHover] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
-
-  // mobile drawer state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const [contactOpen, setContactOpen] = useState(false);
 
   const productsRef = useRef(null);
@@ -68,6 +64,16 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (isMobile) {
+      document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen, isMobile]);
+
   const dropDownAnim = {
     initial: { opacity: 0, y: -15, scale: 0.95 },
     animate: {
@@ -76,12 +82,7 @@ export default function Header() {
       scale: 1,
       transition: { type: "spring", stiffness: 300, damping: 25 },
     },
-    exit: {
-      opacity: 0,
-      y: -10,
-      scale: 0.95,
-      transition: { duration: 0.15 },
-    },
+    exit: { opacity: 0, y: -10, scale: 0.95, transition: { duration: 0.15 } },
   };
 
   const previewPanelAnim = {
@@ -120,7 +121,7 @@ export default function Header() {
         {
           label: "Opscale ERP Nexus",
           path: "/products/opscale",
-          image: artificial, // replace with your new ERP landscape image
+          image: artificial,
           description:
             "An enterprise-wide ERP fabric integrating core operations with automation, unified data, and configurable workflows for limitless scalability.",
         },
@@ -131,20 +132,6 @@ export default function Header() {
           description:
             "Complete HR solution for attendance, payroll, leave management, and employee self-service.",
         },
-        /*{
-          label: "Inventory Management System",
-          path: "/products/inventory",
-          image: inventoryImg,
-          description:
-            "Track stock levels, manage warehouses, and automate reordering with real-time insights.",
-        },
-        {
-          label: "Supply Chain Management System",
-          path: "/products/scm",
-          image: scmImg,
-          description:
-            "Optimize logistics, supplier relationships, and procurement processes end-to-end.",
-        },*/
       ],
     },
     {
@@ -176,28 +163,23 @@ export default function Header() {
       hasPreview: false,
       submenu: [
         { label: "Privacy Policy", path: "/privacy-policy" },
-        {
-          label: "Terms of Service",
-          path: "/terms-of-service",
-        },
+        { label: "Terms of Service", path: "/terms-of-service" },
         { label: "Refund Policy", path: "/refund-policy" },
       ],
     },
   ];
 
-  // Behaviors: don't open popper on mobile — use Drawer instead
+  // ── Desktop handlers (untouched) ──
   const handleHover = (menu, ref) => {
     if (isMobile) return;
     setAnchorEl(ref.current);
     setHoverMenu(menu);
   };
-
   const handleClick = (menu, ref) => {
     if (isMobile) return;
     setAnchorEl(ref.current);
     setClickedMenu((prev) => (prev === menu ? "" : menu));
   };
-
   const handleClose = () => {
     if (isMobile) return;
     setHoverMenu("");
@@ -205,62 +187,322 @@ export default function Header() {
     setAnchorEl(null);
     setHoveredItem(null);
   };
-
   const isOpen = (menu) => hoverMenu === menu || clickedMenu === menu;
 
-  /* ---------------- Mobile Drawer content (keeps images in list for context) ---------------- */
+  const handleFormSubmit = async (data) => {
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      alert("Thank you! Your enquiry has been submitted.");
+      setContactOpen(false);
+    } catch (err) {
+      console.log(err);
+      alert("Error sending your request. Please try again.");
+    }
+  };
+
+  // ── Animated hamburger lines ──
+  const HamburgerIcon = ({ isOpen: open }) => (
+    <Box
+      sx={{
+        width: 22,
+        height: 16,
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          style={{
+            display: "block",
+            height: 2,
+            borderRadius: 2,
+            background: "linear-gradient(90deg, #a92427, #c94043)",
+            transformOrigin: "center",
+          }}
+          animate={
+            open
+              ? i === 0
+                ? { rotate: 45, y: 7, width: "100%" }
+                : i === 1
+                  ? { opacity: 0, scaleX: 0 }
+                  : { rotate: -45, y: -7, width: "100%" }
+              : {
+                  rotate: 0,
+                  y: 0,
+                  opacity: 1,
+                  scaleX: 1,
+                  width: i === 1 ? "70%" : "100%",
+                }
+          }
+          transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        />
+      ))}
+    </Box>
+  );
+
+  // ── Mobile drawer content ──
+  const drawerVariants = {
+    hidden: { x: "100%", opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 280,
+        damping: 28,
+        staggerChildren: 0.06,
+      },
+    },
+    exit: {
+      x: "100%",
+      opacity: 0,
+      transition: { duration: 0.22, ease: "easeIn" },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { x: 30, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 340, damping: 26 },
+    },
+  };
+
   const renderMobileMenu = (
-    <Box sx={{ width: 320, p: 2 }}>
+    <Box
+      sx={{
+        width: 300,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        background: "linear-gradient(160deg, #ffffff 0%, #fef5f5 100%)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Decorative background blob */}
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={1}
-        top={10}
+        sx={{
+          position: "absolute",
+          width: 260,
+          height: 260,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(169,36,39,0.07) 0%, transparent 70%)",
+          top: -80,
+          right: -80,
+          pointerEvents: "none",
+        }}
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          width: 180,
+          height: 180,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(169,36,39,0.05) 0%, transparent 70%)",
+          bottom: 60,
+          left: -60,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Drawer header */}
+      <Box
+        sx={{
+          px: 2.5,
+          pt: 2.5,
+          pb: 1.5,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: "1px solid rgba(169,36,39,0.08)",
+        }}
       >
-        <Typography variant="h6" fontWeight={700}>
-          Kernn Menu
-        </Typography>
-        <IconButton
-          onClick={() => setMobileMenuOpen(false)}
-          aria-label="close menu"
-        >
-          <CloseIcon />
-        </IconButton>
+        {/*<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <img src={companyLogo} alt="Logo" style={{ width: 32, height: 32 }} />
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              background: "linear-gradient(135deg, #a92427, #c94043)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "-0.3px",
+            }}
+          >
+            Kernn Automations
+          </Typography>
+        </Box>
+        <motion.div whileTap={{ scale: 0.88 }}>
+          <IconButton
+            onClick={() => setMobileMenuOpen(false)}
+            size="small"
+            sx={{
+              color: "#a92427",
+              background: "rgba(169,36,39,0.06)",
+              borderRadius: "8px",
+              "&:hover": { background: "rgba(169,36,39,0.12)" },
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </motion.div>*/}
       </Box>
 
-      <List>
-        {navItems.map((item) => (
-          <Accordion key={item.label} disableGutters>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={700}>{item.label}</Typography>
-            </AccordionSummary>
-
-            <AccordionDetails sx={{ px: 0 }}>
-              {item.submenu.map((sub) => (
-                <ListItem
-                  key={sub.label}
-                  button
-                  onClick={() => {
-                    if (sub.path) navigate(sub.path);
-                    else if (sub.link) window.open(sub.link, "_blank");
-                    setMobileMenuOpen(false);
+      {/* Nav items */}
+      <Box sx={{ flex: 1, overflowY: "auto", px: 1.5, pt: 1.5, pb: 2 }}>
+        <motion.div
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.07, delayChildren: 0.05 },
+            },
+          }}
+          initial="hidden"
+          animate="visible"
+        >
+          {navItems.map((item, idx) => (
+            <motion.div key={item.label} variants={itemVariants}>
+              <Accordion
+                disableGutters
+                elevation={0}
+                sx={{
+                  background: "transparent",
+                  "&:before": { display: "none" },
+                  mb: 0.5,
+                  borderRadius: "10px !important",
+                  overflow: "hidden",
+                  "&.Mui-expanded": {
+                    background: "rgba(169,36,39,0.04)",
+                    border: "1px solid rgba(169,36,39,0.1)",
+                  },
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={
+                    <ExpandMoreIcon
+                      sx={{ color: "#a92427", fontSize: "1.1rem" }}
+                    />
+                  }
+                  sx={{
+                    px: 2,
+                    py: 0.5,
+                    minHeight: 48,
+                    "& .MuiAccordionSummary-content": { my: 0 },
+                    "&:hover": { background: "rgba(169,36,39,0.04)" },
+                    borderRadius: "10px",
                   }}
-                  sx={{ py: 0.8 }}
                 >
-                  <ListItemText
-                    primary={sub.label}
-                    secondary={sub.description ? sub.description : null}
-                    primaryTypographyProps={{ fontWeight: 600 }}
-                    secondaryTypographyProps={{ fontSize: "0.8rem" }}
-                  />
-                </ListItem>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: "0.97rem",
+                      color: "#1a1a1a",
+                      letterSpacing: "-0.2px",
+                    }}
+                  >
+                    {item.label}
+                  </Typography>
+                </AccordionSummary>
 
-        <Box mt={2} p={1}>
+                <AccordionDetails sx={{ px: 1, pt: 0, pb: 1 }}>
+                  {item.submenu.map((sub, subIdx) => (
+                    <motion.div
+                      key={sub.label}
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: subIdx * 0.05 }}
+                    >
+                      <ListItem
+                        button
+                        onClick={() => {
+                          if (sub.path) navigate(sub.path);
+                          else if (sub.link) window.open(sub.link, "_blank");
+                          setMobileMenuOpen(false);
+                        }}
+                        sx={{
+                          py: 1,
+                          px: 1.5,
+                          borderRadius: "8px",
+                          mb: 0.25,
+                          transition: "all 0.18s ease",
+                          position: "relative",
+                          "&::before": {
+                            content: '""',
+                            position: "absolute",
+                            left: 0,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: 3,
+                            height: 0,
+                            background: "#a92427",
+                            borderRadius: "0 2px 2px 0",
+                            transition: "height 0.18s ease",
+                          },
+                          "&:hover": {
+                            background: "rgba(169,36,39,0.06)",
+                            pl: 2.5,
+                            "&::before": { height: "60%" },
+                          },
+                          "&:active": { background: "rgba(169,36,39,0.1)" },
+                        }}
+                      >
+                        <ListItemText
+                          primary={sub.label}
+                          secondary={sub.description || null}
+                          primaryTypographyProps={{
+                            fontWeight: 500,
+                            fontSize: "0.9rem",
+                            color: "#333",
+                          }}
+                          secondaryTypographyProps={{
+                            fontSize: "0.76rem",
+                            color: "#888",
+                            sx: {
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              mt: 0.25,
+                            },
+                          }}
+                        />
+                      </ListItem>
+                    </motion.div>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+            </motion.div>
+          ))}
+        </motion.div>
+      </Box>
+
+      {/* Bottom CTA */}
+      <Box
+        sx={{
+          px: 2,
+          pb: 3,
+          pt: 1.5,
+          borderTop: "1px solid rgba(169,36,39,0.08)",
+        }}
+      >
+        <motion.div
+          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.02 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <Box
             onClick={() => {
               setContactOpen(true);
@@ -269,40 +511,51 @@ export default function Header() {
             sx={{
               cursor: "pointer",
               px: 3,
-              py: 1,
-              borderRadius: "8px",
+              py: 1.4,
+              borderRadius: "10px",
               background: "linear-gradient(135deg, #a92427 0%, #c94043 100%)",
               color: "#fff",
               fontWeight: 700,
+              fontSize: "0.95rem",
               textAlign: "center",
-              boxShadow: "0 6px 20px rgba(169,36,39,0.2)",
+              boxShadow: "0 8px 24px rgba(169,36,39,0.28)",
+              letterSpacing: "0.01em",
+              position: "relative",
+              overflow: "hidden",
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                transition: "left 0.5s ease",
+              },
+              "&:hover::after": { left: "100%" },
             }}
           >
             Contact Us
           </Box>
-        </Box>
-      </List>
+        </motion.div>
+
+        {/* Subtle brand tagline */}
+        <Typography
+          sx={{
+            textAlign: "center",
+            fontSize: "0.72rem",
+            color: "rgba(169,36,39,0.4)",
+            mt: 1.5,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+          }}
+        >
+          Kernn Automations
+        </Typography>
+      </Box>
     </Box>
   );
-
-  const handleFormSubmit = async (data) => {
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      alert("Thank you! Your enquiry has been submitted.");
-      setContactOpen(false);
-    } catch (err) {
-      console.log(err);
-      alert("Error sending your request. Please try again.");
-    }
-  };
 
   return (
     <>
@@ -327,7 +580,7 @@ export default function Header() {
             py: 1.5,
           }}
         >
-          {/* Logo with animation */}
+          {/* Logo (unchanged) */}
           <motion.div
             onHoverStart={() => !isMobile && setLogoHover(true)}
             onHoverEnd={() => !isMobile && setLogoHover(false)}
@@ -372,18 +625,33 @@ export default function Header() {
             </Box>
           </motion.div>
 
-          {/* Mobile Hamburger */}
+          {/* ── Mobile: animated hamburger button ── */}
           {isMobile && (
-            <IconButton
-              aria-label="open menu"
-              onClick={() => setMobileMenuOpen(true)}
-              sx={{ color: "#333" }}
-            >
-              <MenuIcon />
-            </IconButton>
+            <motion.div whileTap={{ scale: 0.88 }}>
+              <IconButton
+                aria-label={mobileMenuOpen ? "close menu" : "open menu"}
+                onClick={() => setMobileMenuOpen((prev) => !prev)}
+                sx={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: "10px",
+                  background: mobileMenuOpen
+                    ? "rgba(169,36,39,0.1)"
+                    : "rgba(169,36,39,0.05)",
+                  border: "1px solid rgba(169,36,39,0.12)",
+                  transition: "background 0.2s ease",
+                  "&:hover": { background: "rgba(169,36,39,0.12)" },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <HamburgerIcon isOpen={mobileMenuOpen} />
+              </IconButton>
+            </motion.div>
           )}
 
-          {/* Nav area (desktop) */}
+          {/* Desktop nav (completely untouched) */}
           {!isMobile && (
             <Box
               sx={{
@@ -394,7 +662,6 @@ export default function Header() {
                 justifyContent: "space-between",
               }}
             >
-              {/* Left side nav */}
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 {navItems.map((item, index) => (
                   <motion.div
@@ -457,7 +724,6 @@ export default function Header() {
                         </motion.span>
                       </Box>
 
-                      {/* Desktop Popper & preview */}
                       <AnimatePresence mode="wait">
                         {isOpen(item.label) && anchorEl && (
                           <Popper
@@ -485,7 +751,6 @@ export default function Header() {
                                     display: "flex",
                                   }}
                                 >
-                                  {/* MenuList */}
                                   <MenuList sx={{ minWidth: 260, py: 1 }}>
                                     {item.submenu.map((sub, subIndex) => (
                                       <motion.div
@@ -547,7 +812,6 @@ export default function Header() {
                                     ))}
                                   </MenuList>
 
-                                  {/* Preview Panel - only for items with hasPreview */}
                                   <AnimatePresence mode="wait">
                                     {item.hasPreview && hoveredItem && (
                                       <motion.div
@@ -608,7 +872,6 @@ export default function Header() {
                                               />
                                             </Box>
                                           </motion.div>
-
                                           <motion.div
                                             initial={{ y: 10, opacity: 0 }}
                                             animate={{ y: 0, opacity: 1 }}
@@ -629,7 +892,6 @@ export default function Header() {
                                               {hoveredItem.label}
                                             </Typography>
                                           </motion.div>
-
                                           <motion.div
                                             initial={{ y: 10, opacity: 0 }}
                                             animate={{ y: 0, opacity: 1 }}
@@ -668,7 +930,6 @@ export default function Header() {
                 ))}
               </Box>
 
-              {/* Right side contact button */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -714,18 +975,50 @@ export default function Header() {
           )}
         </Toolbar>
       </AppBar>
+
       <ContactForm
         open={contactOpen}
         onClose={() => setContactOpen(false)}
         onSubmit={handleFormSubmit}
       />
-      {/* Mobile Drawer */}
+
+      {/* ── Enhanced Mobile Drawer ── */}
       <Drawer
         anchor="right"
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
+        PaperProps={{
+          sx: {
+            mt: "72px",
+            height: "calc(100% - 72px)",
+            borderTopLeftRadius: "16px",
+            borderBottomLeftRadius: "0px",
+            overflow: "hidden",
+            boxShadow: "-8px 0 40px rgba(169,36,39,0.12)",
+          },
+        }}
+        SlideProps={{
+          // Framer-motion handles the inner animation; MUI slide is kept for a11y
+          timeout: { enter: 320, exit: 220 },
+        }}
       >
-        {renderMobileMenu}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              key="drawer"
+              initial={{ x: 40, opacity: 0 }}
+              animate={{
+                x: 0,
+                opacity: 1,
+                transition: { type: "spring", stiffness: 300, damping: 28 },
+              }}
+              exit={{ x: 40, opacity: 0, transition: { duration: 0.18 } }}
+              style={{ height: "100%" }}
+            >
+              {renderMobileMenu}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Drawer>
     </>
   );

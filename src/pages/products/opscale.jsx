@@ -965,7 +965,7 @@ export default function OpscaleERPNexus() {
           viewport={{ once: true, margin: "-120px" }}
           variants={fadeInUp}
           style={storySectionStyle(
-            "linear-gradient(180deg,#FFFFFF 0%,#F9FAFB 100%)"
+            "linear-gradient(180deg,#FFFFFF 0%,#F9FAFB 100%)",
           )}
           data-problem
         >
@@ -1159,7 +1159,7 @@ export default function OpscaleERPNexus() {
           variants={fadeInUp}
           style={storySectionStyle(
             "linear-gradient(135deg,#0B1120 0%,#111827 50%,#020617 100%)",
-            true
+            true,
           )}
           data-vision
         >
@@ -1929,41 +1929,58 @@ export default function OpscaleERPNexus() {
         })}
 
         {/* ================= 7. UNIFIED DATA FABRIC & SECURITY ================= */}
+        {/* ================= 7. UNIFIED DATA FABRIC & SECURITY ================= */}
         <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-120px" }}
           variants={fadeInUp}
-          style={storySectionStyle(
-            "radial-gradient(circle at top,#FEE2E2 0,transparent 55%),#0F172A",
-            true
-          )}
+          style={{
+            width: "100%",
+            background:
+              "radial-gradient(circle at top, #FEE2E2 0, transparent 55%), #0F172A",
+            padding: "clamp(56px, 8vw, 112px) 0",
+            boxSizing: "border-box",
+            position: "relative",
+            overflow: "hidden",
+          }}
           data-architecture
         >
-          <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
+          <div
+            style={{
+              maxWidth: 1120,
+              margin: "0 auto",
+              padding: "0 clamp(16px, 5vw, 32px)",
+            }}
+          >
+            {/* ── Two-column grid → single column on tablet/mobile ── */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "minmax(0,1.4fr) minmax(0,1.1fr)",
-                gap: 40,
+                gridTemplateColumns: "minmax(0, 1.4fr) minmax(0, 1.1fr)",
+                gap: "clamp(24px, 4vw, 40px)",
                 alignItems: "center",
               }}
+              className="df-grid"
             >
+              {/* ── LEFT: heading + copy + cards ── */}
               <motion.div variants={fadeInLeft}>
                 <h2
                   style={{
-                    fontSize: "clamp(2rem,3.4vw,2.5rem)",
+                    fontSize: "clamp(1.6rem, 3.4vw, 2.5rem)",
                     fontWeight: 800,
                     letterSpacing: "-0.06em",
                     marginBottom: 14,
                     color: "#F9FAFB",
+                    lineHeight: 1.2,
                   }}
                 >
                   One data fabric. Every module, same truth.
                 </h2>
+
                 <p
                   style={{
-                    fontSize: "1.02rem",
+                    fontSize: "clamp(0.9rem, 1.6vw, 1.02rem)",
                     color: "rgba(209,213,219,0.92)",
                     lineHeight: 1.8,
                     marginBottom: 16,
@@ -1974,9 +1991,10 @@ export default function OpscaleERPNexus() {
                   operation, Opscale ensures all suites sit on a unified,
                   secure, and compliant data fabric.
                 </p>
+
                 <p
                   style={{
-                    fontSize: "0.96rem",
+                    fontSize: "clamp(0.84rem, 1.4vw, 0.96rem)",
                     color: "rgba(148,163,184,0.95)",
                     lineHeight: 1.8,
                     marginBottom: 18,
@@ -1988,11 +2006,13 @@ export default function OpscaleERPNexus() {
                   copy-paste and full traceability.
                 </p>
 
+                {/* Feature cards — auto-fit, force 1-col below 480px via min-width */}
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-                    gap: 16,
+                    gridTemplateColumns:
+                      "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
+                    gap: 14,
                     marginTop: 10,
                   }}
                 >
@@ -2016,10 +2036,10 @@ export default function OpscaleERPNexus() {
                     <div
                       key={item.title}
                       style={{
-                        padding: 16,
+                        padding: "clamp(12px, 2.5vw, 16px)",
                         borderRadius: 18,
                         background:
-                          "linear-gradient(135deg,rgba(15,23,42,0.9),rgba(15,23,42,0.7))",
+                          "linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.7))",
                         border: "1px solid rgba(148,163,184,0.7)",
                       }}
                     >
@@ -2033,11 +2053,11 @@ export default function OpscaleERPNexus() {
                       >
                         <item.icon
                           size={18}
-                          style={{ color: brandColors.accent }}
+                          style={{ color: brandColors.accent, flexShrink: 0 }}
                         />
                         <span
                           style={{
-                            fontSize: "0.9rem",
+                            fontSize: "clamp(0.82rem, 1.3vw, 0.9rem)",
                             fontWeight: 600,
                             color: "#E5E7EB",
                           }}
@@ -2047,9 +2067,10 @@ export default function OpscaleERPNexus() {
                       </div>
                       <p
                         style={{
-                          fontSize: "0.86rem",
+                          fontSize: "clamp(0.8rem, 1.2vw, 0.86rem)",
                           color: "rgba(209,213,219,0.9)",
                           lineHeight: 1.7,
+                          margin: 0,
                         }}
                       >
                         {item.text}
@@ -2059,42 +2080,48 @@ export default function OpscaleERPNexus() {
                 </div>
               </motion.div>
 
+              {/* ── RIGHT: snapshot panel ── */}
               <motion.div
                 variants={fadeInRight}
                 style={{
                   borderRadius: 28,
-                  padding: 24,
+                  padding: "clamp(16px, 3vw, 24px)",
                   background:
-                    "linear-gradient(145deg,rgba(15,23,42,0.9),rgba(15,23,42,0.5))",
+                    "linear-gradient(145deg, rgba(15,23,42,0.9), rgba(15,23,42,0.5))",
                   border: "1px solid rgba(148,163,184,0.7)",
                   boxShadow: "0 24px 60px rgba(15,23,42,0.85)",
                 }}
               >
                 <h3
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "clamp(0.72rem, 1.1vw, 0.9rem)",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "rgba(209,213,219,0.9)",
                     marginBottom: 10,
+                    marginTop: 0,
                   }}
                 >
                   DATA FABRIC SNAPSHOT
                 </h3>
+
+                {/* Inner snapshot grid → single column on small phones */}
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "minmax(0,1.1fr) minmax(0,1fr)",
+                    gridTemplateColumns: "minmax(0, 1.1fr) minmax(0, 1fr)",
                     gap: 20,
                   }}
+                  className="df-snapshot-grid"
                 >
                   <div>
                     <p
                       style={{
-                        fontSize: "0.9rem",
+                        fontSize: "clamp(0.82rem, 1.3vw, 0.9rem)",
                         color: "rgba(243,244,246,0.95)",
                         lineHeight: 1.7,
                         marginBottom: 10,
+                        marginTop: 0,
                       }}
                     >
                       Every core suite writes into the same story graph:
@@ -2104,7 +2131,7 @@ export default function OpscaleERPNexus() {
                         margin: 0,
                         paddingLeft: 18,
                         listStyle: "disc",
-                        fontSize: "0.86rem",
+                        fontSize: "clamp(0.78rem, 1.2vw, 0.86rem)",
                         color: "rgba(209,213,219,0.9)",
                         lineHeight: 1.7,
                       }}
@@ -2122,20 +2149,22 @@ export default function OpscaleERPNexus() {
                       </li>
                     </ul>
                   </div>
+
                   <div
                     style={{
                       borderRadius: 18,
                       padding: 14,
                       background:
-                        "linear-gradient(145deg,rgba(15,23,42,0.9),rgba(15,23,42,0.6))",
+                        "linear-gradient(145deg, rgba(15,23,42,0.9), rgba(15,23,42,0.6))",
                       border: "1px solid rgba(148,163,184,0.7)",
                     }}
                   >
                     <p
                       style={{
-                        fontSize: "0.84rem",
+                        fontSize: "clamp(0.78rem, 1.2vw, 0.84rem)",
                         color: "rgba(209,213,219,0.9)",
                         lineHeight: 1.7,
+                        margin: 0,
                       }}
                     >
                       The result: finance never has to reconstruct the story at
@@ -2446,6 +2475,7 @@ export default function OpscaleERPNexus() {
         </motion.section>
 
         {/* ================= 10. IMPLEMENTATION JOURNEY (STORY OF GO-LIVE) ================= */}
+        {/* ================= 10. IMPLEMENTATION JOURNEY (STORY OF GO-LIVE) ================= */}
         <motion.section
           initial="hidden"
           whileInView="visible"
@@ -2454,10 +2484,16 @@ export default function OpscaleERPNexus() {
           style={storySectionStyle("#FFFFFF")}
           data-journey
         >
-          <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
+          <div
+            style={{
+              maxWidth: 1120,
+              margin: "0 auto",
+              padding: "0 clamp(16px, 5vw, 32px)",
+            }}
+          >
             <h2
               style={{
-                fontSize: "clamp(2rem,3.3vw,2.5rem)",
+                fontSize: "clamp(2rem, 3.3vw, 2.5rem)",
                 fontWeight: 800,
                 textAlign: "center",
                 marginBottom: 10,
@@ -2468,7 +2504,7 @@ export default function OpscaleERPNexus() {
             </h2>
             <p
               style={{
-                fontSize: "1.02rem",
+                fontSize: "clamp(0.9rem, 1.6vw, 1.02rem)",
                 color: brandColors.textLight,
                 textAlign: "center",
                 maxWidth: 680,
@@ -2481,19 +2517,22 @@ export default function OpscaleERPNexus() {
               mapped to suites, modules, and measurable outcomes.
             </p>
 
+            {/* Two-column grid → single column on tablet/mobile via className */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "minmax(0,1.5fr) minmax(0,1.1fr)",
-                gap: 32,
+                gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 1.1fr)",
+                gap: "clamp(20px, 3vw, 32px)",
                 alignItems: "flex-start",
               }}
+              className="journey-grid"
             >
+              {/* ── Left: phase cards ── */}
               <motion.div
                 variants={staggerContainer}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "minmax(0,1fr)",
+                  gridTemplateColumns: "minmax(0, 1fr)",
                   gap: 12,
                 }}
               >
@@ -2528,19 +2567,19 @@ export default function OpscaleERPNexus() {
                     key={phase.step}
                     variants={fadeInUp}
                     style={{
-                      padding: 18,
+                      padding: "clamp(14px, 2.5vw, 18px)",
                       borderRadius: 18,
                       border: `1px solid ${brandColors.borderLight}`,
                       backgroundColor: "#FFFFFF",
                       boxShadow: "0 8px 20px rgba(15,23,42,0.03)",
                       display: "flex",
-                      gap: 16,
+                      gap: "clamp(10px, 2vw, 16px)",
                       alignItems: "flex-start",
                     }}
                   >
                     <div
                       style={{
-                        minWidth: 72,
+                        minWidth: 68,
                         padding: "8px 10px",
                         borderRadius: 999,
                         backgroundColor: brandColors.secondaryBg,
@@ -2550,6 +2589,7 @@ export default function OpscaleERPNexus() {
                         textTransform: "uppercase",
                         color: brandColors.textLight,
                         textAlign: "center",
+                        flexShrink: 0,
                       }}
                     >
                       {phase.step}
@@ -2557,7 +2597,7 @@ export default function OpscaleERPNexus() {
                     <div>
                       <div
                         style={{
-                          fontSize: "1rem",
+                          fontSize: "clamp(0.9rem, 1.5vw, 1rem)",
                           fontWeight: 600,
                           marginBottom: 4,
                           color: brandColors.textDark,
@@ -2567,9 +2607,10 @@ export default function OpscaleERPNexus() {
                       </div>
                       <p
                         style={{
-                          fontSize: "0.93rem",
+                          fontSize: "clamp(0.84rem, 1.3vw, 0.93rem)",
                           color: brandColors.textLight,
                           lineHeight: 1.7,
+                          margin: 0,
                         }}
                       >
                         {phase.text}
@@ -2579,34 +2620,41 @@ export default function OpscaleERPNexus() {
                 ))}
               </motion.div>
 
+              {/* ── Right: "What Teams Feel" dark card ── */}
               <motion.div
                 variants={fadeInRight}
                 style={{
                   borderRadius: 24,
-                  padding: 24,
+                  padding: "clamp(18px, 3vw, 24px)",
                   background:
-                    "linear-gradient(135deg,#0F172A 0%,#111827 40%,#020617 100%)",
+                    "linear-gradient(135deg, #0F172A 0%, #111827 40%, #020617 100%)",
                   color: "#F9FAFB",
                   boxShadow: "0 20px 50px rgba(15,23,42,0.8)",
+                  // Keeps card from stretching too tall on desktop
+                  alignSelf: "start",
+                  position: "sticky",
+                  top: 24,
                 }}
               >
                 <h3
                   style={{
-                    fontSize: "0.95rem",
+                    fontSize: "clamp(0.75rem, 1.1vw, 0.95rem)",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "rgba(209,213,219,0.9)",
                     marginBottom: 8,
+                    marginTop: 0,
                   }}
                 >
                   WHAT TEAMS FEEL
                 </h3>
                 <p
                   style={{
-                    fontSize: "0.95rem",
+                    fontSize: "clamp(0.86rem, 1.4vw, 0.95rem)",
                     lineHeight: 1.8,
                     color: "rgba(243,244,246,0.96)",
                     marginBottom: 12,
+                    marginTop: 0,
                   }}
                 >
                   In Phase 1, teams finally see their frustrations mapped out
@@ -2617,9 +2665,10 @@ export default function OpscaleERPNexus() {
                 </p>
                 <p
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "clamp(0.82rem, 1.3vw, 0.9rem)",
                     lineHeight: 1.8,
                     color: "rgba(156,163,175,0.96)",
+                    margin: 0,
                   }}
                 >
                   The result isn&apos;t just a new ERP. It&apos;s a shared,
@@ -2831,6 +2880,26 @@ export default function OpscaleERPNexus() {
           section {
             padding-left: 0 !important;
             padding-right: 0 !important;
+          }
+        }
+        /* ── Section 7: data fabric grid collapses on tablet ── */
+        @media (max-width: 860px) {
+          .df-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+
+        /* ── Section 7: snapshot inner grid collapses on small phones ── */
+        @media (max-width: 560px) {
+          .df-snapshot-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        /* ── Section 10: journey grid collapses on tablet ── */
+        @media (max-width: 860px) {
+          .journey-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>

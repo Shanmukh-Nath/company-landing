@@ -2,15 +2,25 @@
 import React from "react";
 import { Box, Typography, Link, Stack, IconButton } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   const linkHover = { color: "#a92427", scale: 1.05 };
+
+  const footerLinks = [
+    { label: "Home", action: () => navigate("/") },
+    { label: "Contact Us", action: () => navigate("/#contact") }, // or trigger modal if needed
+    { label: "Privacy Policy", action: () => navigate("/privacy-policy") },
+    { label: "Terms of Service", action: () => navigate("/terms-of-service") },
+    { label: "Refund Policy", action: () => navigate("/refund-policy") },
+  ];
 
   return (
     <Box sx={{ mt: 10 }}>
-      {/* Upper Gradient / Glass Section */}
+      {/* Upper Section */}
       <Box
         sx={{
           background: "linear-gradient(135deg, #fff0f0 0%, #fde8e8 100%)",
@@ -29,7 +39,7 @@ export default function Footer() {
             px: { xs: 2, md: 0 },
           }}
         >
-          {/* Social Icons */}
+          {/* Social */}
           <Stack
             direction="row"
             justifyContent="center"
@@ -38,20 +48,7 @@ export default function Footer() {
           >
             <motion.div whileHover={{ scale: 1.2 }}>
               <IconButton
-                href="https://twitter.com/YOUR_COMPANY"
-                target="_blank"
-                sx={{
-                  background: "rgba(255,255,255,0.8)",
-                  transition: "all 0.3s ease",
-                  "&:hover": { background: "#a92427", color: "#fff" },
-                }}
-              >
-                <TwitterIcon sx={{ fontSize: 28 }} />
-              </IconButton>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.2 }}>
-              <IconButton
-                href="https://linkedin.com/company/YOUR_COMPANY"
+                href="https://www.linkedin.com/company/kernn-automations/"
                 target="_blank"
                 sx={{
                   background: "rgba(255,255,255,0.8)",
@@ -71,30 +68,23 @@ export default function Footer() {
             spacing={3}
             sx={{ flexWrap: "wrap", fontSize: 14 }}
           >
-            {[
-              "Home",
-              "Contact Us",
-              "Security",
-              "Compliance",
-              "Privacy Policy",
-              "Terms of Service",
-            ].map((link) => (
+            {footerLinks.map((link) => (
               <motion.div
-                key={link}
+                key={link.label}
                 whileHover={linkHover}
-                style={{ display: "inline-block" }}
+                style={{ display: "inline-block", cursor: "pointer" }}
               >
                 <Link
                   underline="none"
                   color="#333"
-                  href="#"
+                  onClick={link.action}
                   sx={{
                     fontWeight: 500,
                     transition: "all 0.3s ease",
                     "&:hover": { textDecoration: "underline" },
                   }}
                 >
-                  {link}
+                  {link.label}
                 </Link>
               </motion.div>
             ))}
@@ -102,7 +92,7 @@ export default function Footer() {
         </Box>
       </Box>
 
-      {/* Bottom Dark Strip */}
+      {/* Bottom Strip */}
       <Box
         sx={{
           background: "#0b0e1a",

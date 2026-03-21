@@ -1560,10 +1560,12 @@ export default function BpoServices() {
           viewport={{ once: true, margin: "-80px" }}
           variants={fadeInUp}
           style={{
-            padding: "80px 0",
+            padding: "clamp(48px, 8vw, 80px) 0",
             background:
               "radial-gradient(circle at top,#FEE2E2 0,transparent 55%),#0F172A",
             color: "#F9FAFB",
+            width: "100%",
+            boxSizing: "border-box",
           }}
           data-omnichannel
         >
@@ -1571,31 +1573,35 @@ export default function BpoServices() {
             style={{
               maxWidth: 1120,
               margin: "0 auto",
-              padding: "0 24px",
+              padding: "0 clamp(16px, 5vw, 32px)",
             }}
           >
+            {/* Two-column grid → single column on tablet/mobile */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "minmax(0,1.5fr) minmax(0,1.1fr)",
-                gap: 32,
+                gridTemplateColumns: "minmax(0, 1.5fr) minmax(0, 1.1fr)",
+                gap: "clamp(24px, 4vw, 32px)",
                 alignItems: "flex-start",
               }}
+              className="omni-grid"
             >
+              {/* ── Left: copy + feature cards ── */}
               <motion.div variants={fadeInUp}>
                 <h2
                   style={{
-                    fontSize: "clamp(2rem,3.3vw,2.4rem)",
+                    fontSize: "clamp(1.6rem, 3.3vw, 2.4rem)",
                     fontWeight: 800,
                     marginBottom: 12,
                     letterSpacing: "-0.05em",
+                    lineHeight: 1.2,
                   }}
                 >
                   Omnichannel & automation-ready from day one.
                 </h2>
                 <p
                   style={{
-                    fontSize: "1.02rem",
+                    fontSize: "clamp(0.9rem, 1.6vw, 1.02rem)",
                     color: "rgba(209,213,219,0.92)",
                     lineHeight: 1.8,
                     marginBottom: 14,
@@ -1607,9 +1613,10 @@ export default function BpoServices() {
                 </p>
                 <p
                   style={{
-                    fontSize: "0.95rem",
+                    fontSize: "clamp(0.84rem, 1.4vw, 0.95rem)",
                     color: "rgba(156,163,175,0.96)",
                     lineHeight: 1.8,
+                    marginBottom: 0,
                   }}
                 >
                   When judgment, empathy, or context is needed, our agents step
@@ -1617,11 +1624,13 @@ export default function BpoServices() {
                   automation-assisted screens.
                 </p>
 
+                {/* Feature cards */}
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-                    gap: 16,
+                    gridTemplateColumns:
+                      "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
+                    gap: 14,
                     marginTop: 18,
                   }}
                 >
@@ -1645,7 +1654,7 @@ export default function BpoServices() {
                     <div
                       key={c.title}
                       style={{
-                        padding: 16,
+                        padding: "clamp(12px, 2.5vw, 16px)",
                         borderRadius: 18,
                         background:
                           "linear-gradient(135deg,rgba(15,23,42,0.9),rgba(15,23,42,0.6))",
@@ -1660,10 +1669,13 @@ export default function BpoServices() {
                           marginBottom: 6,
                         }}
                       >
-                        <c.icon size={18} style={{ color: brand.accent }} />
+                        <c.icon
+                          size={18}
+                          style={{ color: brand.accent, flexShrink: 0 }}
+                        />
                         <span
                           style={{
-                            fontSize: "0.9rem",
+                            fontSize: "clamp(0.82rem, 1.3vw, 0.9rem)",
                             fontWeight: 600,
                             color: "#E5E7EB",
                           }}
@@ -1673,9 +1685,10 @@ export default function BpoServices() {
                       </div>
                       <p
                         style={{
-                          fontSize: "0.86rem",
+                          fontSize: "clamp(0.8rem, 1.2vw, 0.86rem)",
                           color: "rgba(209,213,219,0.9)",
                           lineHeight: 1.7,
+                          margin: 0,
                         }}
                       >
                         {c.text}
@@ -1685,11 +1698,12 @@ export default function BpoServices() {
                 </div>
               </motion.div>
 
+              {/* ── Right: "Any Tool" dark card ── */}
               <motion.div
                 variants={fadeInUp}
                 style={{
                   borderRadius: 22,
-                  padding: 22,
+                  padding: "clamp(16px, 3vw, 22px)",
                   background:
                     "linear-gradient(135deg,#0F172A 0%,#111827 40%,#020617 100%)",
                   border: "1px solid rgba(148,163,184,0.7)",
@@ -1698,21 +1712,23 @@ export default function BpoServices() {
               >
                 <h3
                   style={{
-                    fontSize: "0.95rem",
+                    fontSize: "clamp(0.72rem, 1.1vw, 0.95rem)",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     color: "rgba(209,213,219,0.9)",
                     marginBottom: 8,
+                    marginTop: 0,
                   }}
                 >
                   ANY TOOL, ANY STACK
                 </h3>
                 <p
                   style={{
-                    fontSize: "0.95rem",
+                    fontSize: "clamp(0.86rem, 1.4vw, 0.95rem)",
                     lineHeight: 1.8,
                     color: "rgba(243,244,246,0.96)",
                     marginBottom: 10,
+                    marginTop: 0,
                   }}
                 >
                   Whether you use modern SaaS CRMs or legacy systems, we adapt
@@ -1721,9 +1737,10 @@ export default function BpoServices() {
                 </p>
                 <p
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "clamp(0.82rem, 1.3vw, 0.9rem)",
                     lineHeight: 1.8,
                     color: "rgba(156,163,175,0.96)",
+                    margin: 0,
                   }}
                 >
                   New process tomorrow? New geography? New product line? You
@@ -2060,6 +2077,13 @@ export default function BpoServices() {
         @media (max-width: 480px) {
           [data-hero] h1 {
             font-size: 2.1rem !important;
+          }
+        }
+
+        /* ── Omnichannel: grid collapses on tablet ── */
+        @media (max-width: 860px) {
+          .omni-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
