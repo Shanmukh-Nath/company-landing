@@ -118,3 +118,13 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.main-content-wrapper {
+  margin-top: 128px;
+}
+
+@media (max-width: 900px) {
+  .main-content-wrapper {
+    margin-top: 94px;
+  }
+}

@@ -494,8 +494,44 @@ export default function Header() {
           pb: 3,
           pt: 1.5,
           borderTop: "1px solid rgba(169,36,39,0.08)",
+          display: "flex",
+          flexDirection: "column",
+          gap: 1.5,
         }}
       >
+        <motion.div
+          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.02 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
+          <Box
+            onClick={() => {
+              window.open("https://novathon.kernn.ai", "_blank");
+              setMobileMenuOpen(false);
+            }}
+            sx={{
+              cursor: "pointer",
+              px: 3,
+              py: 1.4,
+              borderRadius: "10px",
+              border: "1.5px solid #a92427",
+              color: "#a92427",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              textAlign: "center",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                background: "rgba(169, 36, 39, 0.05)",
+                transform: "translateY(-1px)",
+              },
+            }}
+          >
+            Novathon
+          </Box>
+        </motion.div>
+
         <motion.div
           whileTap={{ scale: 0.97 }}
           whileHover={{ scale: 1.02 }}
@@ -572,6 +608,234 @@ export default function Header() {
           zIndex: 1300,
         }}
       >
+        {/* CSS for loading font */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@700&display=swap');
+          .novathon-banner-font {
+            font-family: 'Architects Daughter', 'Caveat', cursive;
+          }
+          .crayon-filter {
+            filter: url(#rough-crayon);
+          }
+        `}} />
+
+        {/* SVG filter for rough/crayon hand-drawn style */}
+        <svg style={{ position: "absolute", width: 0, height: 0 }}>
+          <defs>
+            <filter id="rough-crayon" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
+
+        {/* DESKTOP BANNER (Visible on md and up) */}
+        <Box
+          onClick={() => window.open("https://novathon.kernn.ai", "_blank")}
+          sx={{
+            display: { xs: "none", md: "flex" },
+            width: "100%",
+            height: "38px",
+            backgroundSize: "15px 15px",
+            backgroundImage: "linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)",
+            backgroundColor: "#ffffff",
+            borderBottom: "2px solid #1a1a1a",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            cursor: "pointer",
+            overflow: "hidden",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#fafafa",
+              borderBottomColor: "#a92427",
+            },
+          }}
+        >
+          {/* Floating Doodles (Left Side) */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, position: "absolute", left: 40, pointerEvents: "none" }}>
+            {/* Crayon Star (Yellow) */}
+            <motion.svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+            >
+              <path
+                d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"
+                fill="none"
+                stroke="#eab308"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+
+            {/* Crayon Swirl (Red) */}
+            <motion.svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ scale: [1, 1.15, 1], rotate: [-10, 10, -10] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            >
+              <path
+                d="M12 3a9 9 0 0 0-9 9c0 3.5 2.5 6 6 6s5-2 5-4-1.5-2.5-3-2.5-2.5 1-2.5 2c0 1.5 1.5 2 2.5 1.5"
+                fill="none"
+                stroke="#e11d48"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          </Box>
+
+          {/* Center Banner Content */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, zIndex: 2 }}>
+            <Typography
+              className="novathon-banner-font"
+              sx={{
+                fontWeight: 700,
+                fontSize: "0.92rem",
+                color: "#1a1a1a",
+                letterSpacing: "0.5px",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <span style={{ color: "#e11d48" }}>★</span>
+              NOVATHON 2026:
+              <span style={{ color: "#2563eb", fontWeight: 600 }}>Sketching something creative...</span>
+              <span style={{ color: "#ea580c" }}>Coming Soon! ✏️🎨</span>
+            </Typography>
+
+            {/* Animated Pencil / Arrow pointing to Register */}
+            <motion.svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ x: [0, 5, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            >
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                fill="none"
+                stroke="#2563eb"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          </Box>
+
+          {/* Floating Doodles (Right Side) */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, position: "absolute", right: 40, pointerEvents: "none" }}>
+            {/* Crayon Lightbulb/Idea (Orange) */}
+            <motion.svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ y: [0, -3, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            >
+              <path
+                d="M15 14c.5-1 1-2 1-3.5A4.5 4.5 0 0 0 7.5 11c0 1.5.5 2.5 1 3.5h6.5zM9 18h6M10 21h4"
+                fill="none"
+                stroke="#ea580c"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+
+            {/* Crayon Check/Star (Green) */}
+            <motion.svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            >
+              <path
+                d="M20 6L9 17l-5-5"
+                fill="none"
+                stroke="#16a34a"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          </Box>
+        </Box>
+
+        {/* MOBILE BANNER (Visible on screens below md) */}
+        <Box
+          onClick={() => window.open("https://novathon.kernn.ai", "_blank")}
+          sx={{
+            display: { xs: "flex", md: "none" },
+            width: "100%",
+            height: "38px",
+            backgroundSize: "12px 12px",
+            backgroundImage: "linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)",
+            backgroundColor: "#ffffff",
+            borderBottom: "2px solid #1a1a1a",
+            alignItems: "center",
+            justifyContent: "center",
+            px: 2,
+            cursor: "pointer",
+            userSelect: "none",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#fafafa",
+              borderBottomColor: "#a92427",
+            },
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              className="novathon-banner-font"
+              sx={{
+                fontWeight: 700,
+                fontSize: "0.8rem",
+                color: "#1a1a1a",
+                letterSpacing: "0.3px",
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+              }}
+            >
+              <span style={{ color: "#e11d48" }}>★</span>
+              NOVATHON 2026:
+              <span style={{ color: "#ea580c" }}>Coming Soon! ✏️🎨</span>
+            </Typography>
+
+            <motion.svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              className="crayon-filter"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            >
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                fill="none"
+                stroke="#2563eb"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          </Box>
+        </Box>
+
         <Toolbar
           sx={{
             display: "flex",
@@ -930,47 +1194,78 @@ export default function Header() {
                 ))}
               </Box>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Box
-                  onClick={() => setContactOpen(true)}
-                  sx={{
-                    cursor: "pointer",
-                    px: 3,
-                    py: 1,
-                    borderRadius: "8px",
-                    background:
-                      "linear-gradient(135deg, #a92427 0%, #c94043 100%)",
-                    color: "#fff",
-                    fontWeight: 600,
-                    fontSize: "0.95rem",
-                    transition: "all 0.3s ease",
-                    position: "relative",
-                    overflow: "hidden",
-                    boxShadow: "0 4px 15px rgba(169, 36, 39, 0.3)",
-                    "&::before": {
-                      content: '""',
-                      position: "absolute",
-                      top: 0,
-                      left: "-100%",
-                      width: "100%",
-                      height: "100%",
-                      background:
-                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
-                      transition: "left 0.5s ease",
-                    },
-                    "&:hover": {
-                      boxShadow: "0 6px 25px rgba(169, 36, 39, 0.4)",
-                      transform: "translateY(-2px)",
-                      "&::before": { left: "100%" },
-                    },
-                  }}
+              <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                {/* Novathon Button */}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  Contact Us
-                </Box>
-              </motion.div>
+                  <Box
+                    onClick={() => window.open("https://novathon.kernn.ai", "_blank")}
+                    sx={{
+                      cursor: "pointer",
+                      px: 3,
+                      py: 1,
+                      borderRadius: "8px",
+                      border: "1.5px solid #a92427",
+                      color: "#a92427",
+                      fontWeight: 600,
+                      fontSize: "0.95rem",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        background: "rgba(169, 36, 39, 0.05)",
+                        boxShadow: "0 4px 15px rgba(169, 36, 39, 0.1)",
+                        transform: "translateY(-2px)",
+                      },
+                    }}
+                  >
+                    Novathon
+                  </Box>
+                </motion.div>
+
+                {/* Contact Us Button */}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Box
+                    onClick={() => setContactOpen(true)}
+                    sx={{
+                      cursor: "pointer",
+                      px: 3,
+                      py: 1,
+                      borderRadius: "8px",
+                      background:
+                        "linear-gradient(135deg, #a92427 0%, #c94043 100%)",
+                      color: "#fff",
+                      fontWeight: 600,
+                      fontSize: "0.95rem",
+                      transition: "all 0.3s ease",
+                      position: "relative",
+                      overflow: "hidden",
+                      boxShadow: "0 4px 15px rgba(169, 36, 39, 0.3)",
+                      "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: "-100%",
+                        width: "100%",
+                        height: "100%",
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                        transition: "left 0.5s ease",
+                      },
+                      "&:hover": {
+                        boxShadow: "0 6px 25px rgba(169, 36, 39, 0.4)",
+                        transform: "translateY(-2px)",
+                        "&::before": { left: "100%" },
+                      },
+                    }}
+                  >
+                    Contact Us
+                  </Box>
+                </motion.div>
+              </Box>
             </Box>
           )}
         </Toolbar>
@@ -989,8 +1284,8 @@ export default function Header() {
         onClose={() => setMobileMenuOpen(false)}
         PaperProps={{
           sx: {
-            mt: "72px",
-            height: "calc(100% - 72px)",
+            mt: "94px",
+            height: "calc(100% - 94px)",
             borderTopLeftRadius: "16px",
             borderBottomLeftRadius: "0px",
             overflow: "hidden",

@@ -36,7 +36,7 @@ export default function App() {
     <>
       <Header />
 
-      <div style={{ marginTop: isFullPageRoute ? 0 : 90 }}>
+      <div className={isFullPageRoute ? "" : "main-content-wrapper"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/opscale" element={<OpscaleERPNexus />} />
