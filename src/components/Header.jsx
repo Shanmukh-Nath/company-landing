@@ -36,6 +36,7 @@ import inventoryImg from "../assets/productImages/inventory.jpg";
 import scmImg from "../assets/productImages/scm.jpg";
 import bpoImg from "../assets/productImages/bpo.jpg";
 import artificial from "../assets/productImages/artificial.jpg";
+import edopsImg from "../assets/productImages/edops.png";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -61,7 +62,14 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleOpenContact = () => setContactOpen(true);
+    window.addEventListener("open-contact-popup", handleOpenContact);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("open-contact-popup", handleOpenContact);
+    };
   }, []);
 
   // Lock body scroll when mobile drawer is open
@@ -131,6 +139,13 @@ export default function Header() {
           image: hrmsImg,
           description:
             "Complete HR solution for attendance, payroll, leave management, and employee self-service.",
+        },
+        {
+          label: "Edops ERP",
+          path: "/products/edops",
+          image: edopsImg,
+          description:
+            "The DevOps Platform for Next-Generation K-12 School Administration.",
         },
       ],
     },
