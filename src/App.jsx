@@ -9,6 +9,7 @@ import PrivacyPolicy from "./pages/legals/PrivacyPolicy";
 import { useEffect } from "react";
 import TermsOfService from "./pages/legals/TermsOfService";
 import RefundPolicy from "./pages/legals/RefundPolicy";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const location = useLocation();
@@ -30,11 +31,14 @@ export default function App() {
     };
   }, []);
 
-  const isFullPageRoute =
-    location.pathname === "/products/opscale" ||
-    location.pathname === "/products/hrms" ||
-    location.pathname === "/products/edops" ||
-    location.pathname === "/services/bpo";
+  const knownWrappedRoutes = [
+    "/",
+    "/privacy-policy",
+    "/terms-of-service",
+    "/refund-policy",
+  ];
+
+  const isFullPageRoute = !knownWrappedRoutes.includes(location.pathname);
 
   return (
     <>
@@ -48,9 +52,10 @@ export default function App() {
           <Route path="/products/edops" element={<EdopsProductPage />} />
           <Route path="/services/bpo" element={<BpoServices />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="*" element={<Home />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </>

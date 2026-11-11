@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import LegalPrintLayout from "../../components/LegalPrintLayout";
 import {
   Printer,
   Share2,
@@ -129,10 +131,8 @@ export default function PrivacyPolicy() {
 
   const handlePrint = async () => {
     setPrintLoading(true);
-    setPrintMode(true);
 
-    let ip = "Unknown";
-
+    let ip = "127.0.0.1";
     try {
       const res = await fetch("https://api.ipify.org?format=json");
       const data = await res.json();
@@ -140,14 +140,9 @@ export default function PrivacyPolicy() {
     } catch {}
 
     const time = new Date().toLocaleString();
-
     setPrintMeta({ ip, time });
-
-    setTimeout(() => {
-      window.print();
-      setPrintMode(false);
-      setPrintLoading(false);
-    }, 500);
+    setPrintLoading(false);
+    setPrintMode(true);
   };
 
   const handleShare = async () => {
@@ -464,148 +459,13 @@ export default function PrivacyPolicy() {
           .pp-contact-grid { grid-template-columns: 1fr !important; }
           .pp-meta-bar { flex-wrap: wrap !important; }
         }
-          /* ================= PRINT LEGAL DOCUMENT ================= */
-
-@page {
-  size: A4;
-  margin: 28mm 22mm 28mm 22mm;
-}
-
-.print-mode * {
-  color: #000 !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-.print-mode .pp-sidebar,
-.print-mode .pp-actions-bar,
-.print-mode .pp-mob-toggle,
-.print-mode button {
-  display: none !important;
-}
-
-.print-mode main {
-  margin-left: 0 !important;
-}
-
-.print-mode .pp-header {
-  background: none !important;
-  padding: 0 !important;
-  margin-bottom: 30px;
-}
-
-.print-mode h1 {
-  font-size: 32px !important;
-  text-align: center;
-  font-family: "Times New Roman", serif;
-}
-
-.print-mode h1 span {
-  -webkit-text-fill-color: #000 !important;
-  color: #000 !important;
-  background: none !important;
-}
-
-.print-mode h2 {
-  font-family: "Times New Roman", serif;
-  font-size: 18px !important;
-  margin-top: 28px;
-  border-bottom: 1px solid #000;
-  padding-bottom: 6px;
-}
-
-.print-mode h3 {
-  font-family: "Times New Roman", serif;
-  font-size: 15px;
-  margin-top: 16px;
-}
-
-.print-mode p,
-.print-mode li {
-  font-family: "Times New Roman", serif;
-  font-size: 12pt;
-  line-height: 1.7;
-}
-  
-
-.print-mode table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 11pt;
-}
-
-.print-mode table th,
-.print-mode table td {
-  border: 1px solid #000;
-  padding: 6px 8px;
-}
-
-.print-mode .pp-article {
-  padding: 0 !important;
-}
-
-.print-mode section {
-  page-break-inside: avoid;
-}
-  /* -------- Legal Footer -------- */
-
-.pp-print-meta {
-  display: none;
-}
-
-.print-mode .pp-print-meta {
-  display: block;
-  position: fixed;
-  bottom: 5mm;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: "Times New Roman", serif;
-  font-size: 9pt;
-  color: #333;
-}
-
-/* -------- Page Numbers -------- */
-
-@page {
-  @bottom-right {
-    content: "Page " counter(page) " of " counter(pages);
-    font-size: 9pt;
-    font-family: "Times New Roman", serif;
-  }
-}
-
-/* -------- Watermark -------- */
-
-.print-mode::before {
-  content: "Kernn Automations Confidential";
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 70px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.1);
-  pointer-events: none;
-  z-index: 100;
-}
-  .print-mode::after {
-  content: "Kernn Automations Private Limited — Privacy Policy";
-  position: fixed;
-  top: 100mm;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 9pt;
-  font-family: "Times New Roman", serif;
-  color: #333;
-  opacity: 0.6;
-}
+        .legal-print-sheet .pp-article {
+          padding: 0 !important;
+        }
       `}</style>
 
       {/* ═══ ROOT ═══════════════════════════════════════════════════════════ */}
       <div
-        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -753,12 +613,6 @@ export default function PrivacyPolicy() {
             marginLeft: window.innerWidth <= 900 ? 0 : 268,
           }}
         >
-          {printMode && (
-            <div className="pp-print-meta">
-              Printed by: {printMeta.ip} | Generated: {printMeta.time} |
-              Document: Kernn Privacy Policy
-            </div>
-          )}
           {/* ── HERO ── */}
           <header
             className="pp-header"
@@ -805,7 +659,12 @@ export default function PrivacyPolicy() {
                 pointerEvents: "none",
               }}
             />
-            <div style={{ position: "relative", zIndex: 2 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{ position: "relative", zIndex: 2 }}
+            >
               {/* eyebrow */}
               <div
                 style={{
@@ -859,7 +718,13 @@ export default function PrivacyPolicy() {
               </p>
 
               {/* Meta pills */}
-              <div className="pp-meta-bar" style={{ display: "flex", gap: 10 }}>
+              <motion.div
+                className="pp-meta-bar"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                style={{ display: "flex", gap: 10 }}
+              >
                 {[
                   ["Effective Date", "January 1, 2026"],
                   ["Last Updated", "January 1, 2026"],
@@ -897,8 +762,8 @@ export default function PrivacyPolicy() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </header>
 
           {/* ── ACTIONS BAR ── */}
@@ -907,14 +772,12 @@ export default function PrivacyPolicy() {
             style={{
               background: BG_WHITE,
               borderBottom: `1px solid ${BORDER_LIGHT}`,
-              padding: "11px 60px",
+              padding: "12px 60px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              position: "sticky",
-              top: 80,
-              zIndex: 10,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              position: "relative",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
             }}
           >
             <div
@@ -922,23 +785,26 @@ export default function PrivacyPolicy() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 10,
                 fontSize: "0.77rem",
                 color: TEXT_LIGHT,
               }}
             >
               <div
                 style={{
-                  width: 6,
-                  height: 6,
+                  width: 7,
+                  height: 7,
                   borderRadius: "50%",
                   background: ACCENT,
+                  boxShadow: "0 0 6px rgba(169,36,39,0.6)",
                 }}
               />
-              Kernn Automations Private Limited — Official Privacy Policy
+              <span>Kernn Automations Private Limited — Official Privacy Policy</span>
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="pp-btn-print"
                 onClick={handlePrint}
                 disabled={printLoading}
@@ -960,9 +826,11 @@ export default function PrivacyPolicy() {
                 }}
               >
                 <Printer size={15} strokeWidth={2} />
-                {printLoading ? "Preparing…" : "Print"}
-              </button>
-              <button
+                {printLoading ? "Preparing…" : "Print / PDF"}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="pp-btn-share"
                 onClick={handleShare}
                 style={{
@@ -984,19 +852,28 @@ export default function PrivacyPolicy() {
               >
                 <Share2 size={15} strokeWidth={2} />
                 Share
-              </button>
+              </motion.button>
             </div>
           </div>
 
-          {/* ═══ ARTICLE ═════════════════════════════════════════════════════ */}
-          <article
-            className="pp-article"
-            style={{
-              padding: "0 60px 80px",
-              margin: "0 auto",
-              width: "100%",
-            }}
+          {/* ═══ PRINT-FRIENDLY LAYOUT WRAPPER ═══ */}
+          <LegalPrintLayout
+            active={printMode}
+            onClose={() => setPrintMode(false)}
+            documentTitle="Privacy and Data Protection Policy"
+            documentNumber="KA-LEGAL-2027-PP"
+            effectiveDate="January 1, 2026"
+            lastUpdated="January 1, 2026"
+            printMeta={printMeta}
           >
+            <article
+              className="pp-article"
+              style={{
+                padding: printMode ? "0" : "0 60px 80px",
+                margin: "0 auto",
+                width: "100%",
+              }}
+            >
             {/* ── OVERVIEW ── */}
             <section
               id="overview"
@@ -1056,8 +933,10 @@ export default function PrivacyPolicy() {
                     "GDPR, India DPDP Act, CCPA, and more.",
                   ],
                 ].map(([Icon, title, text]) => (
-                  <div
+                  <motion.div
                     key={title}
+                    whileHover={{ y: -5, boxShadow: "0 12px 28px rgba(169,36,39,0.14)" }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     className="pp-overview-card"
                     style={{
                       background: BG_WHITE,
@@ -1065,7 +944,7 @@ export default function PrivacyPolicy() {
                       borderRadius: 14,
                       padding: "20px 18px",
                       boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-                      transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                      cursor: "default",
                     }}
                   >
                     <div
@@ -1102,7 +981,7 @@ export default function PrivacyPolicy() {
                     >
                       {text}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </section>
@@ -2173,6 +2052,7 @@ export default function PrivacyPolicy() {
               </div>
             </section>
           </article>
+        </LegalPrintLayout>
         </main>
       </div>
 

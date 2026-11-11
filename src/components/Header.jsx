@@ -668,7 +668,7 @@ export default function Header() {
           }}
         >
           {/* Floating Doodles (Left Side) */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, position: "absolute", left: 40, pointerEvents: "none" }}>
+          <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", gap: 2, position: "absolute", left: { lg: 24, xl: 40 }, pointerEvents: "none" }}>
             {/* Crayon Star (Yellow) */}
             <motion.svg
               width="20"
@@ -709,47 +709,237 @@ export default function Header() {
           </Box>
 
           {/* Center Banner Content */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, zIndex: 2 }}>
-            <Typography
-              className="novathon-banner-font"
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { md: 1.2, lg: 1.6 },
+              zIndex: 2,
+              px: 2,
+              fontFamily: "system-ui, -apple-system, sans-serif",
+            }}
+          >
+            {/* Event Brand Pill */}
+            <Box
               sx={{
-                fontWeight: 700,
-                fontSize: "0.92rem",
-                color: "#1a1a1a",
-                letterSpacing: "0.5px",
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 0.6,
+                px: 1,
+                py: 0.25,
+                borderRadius: "6px",
+                background: "linear-gradient(135deg, rgba(169,36,39,0.08) 0%, rgba(225,29,72,0.08) 100%)",
+                border: "1px solid rgba(169,36,39,0.22)",
+                boxShadow: "0 1px 2px rgba(169,36,39,0.04)",
               }}
             >
-              <span style={{ color: "#e11d48" }}>★</span>
-              NOVATHON 2026:
-              <span style={{ color: "#2563eb", fontWeight: 600 }}>Sketching something creative...</span>
-              <span style={{ color: "#ea580c" }}>Coming Soon! ✏️🎨</span>
-            </Typography>
+              <span style={{ color: "#e11d48", fontSize: "0.85rem", fontWeight: 900 }}>★</span>
+              <Typography
+                component="span"
+                sx={{
+                  fontWeight: 800,
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.6px",
+                  color: "#a92427",
+                  textTransform: "uppercase",
+                  fontFamily: "inherit",
+                }}
+              >
+                NOVATHON 2027
+              </Typography>
+            </Box>
 
-            {/* Animated Pencil / Arrow pointing to Register */}
-            <motion.svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              className="crayon-filter"
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            {/* Event Details: Date & Venue */}
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.8,
+                fontSize: "0.78rem",
+                fontWeight: 600,
+                color: "#1f2937",
+                whiteSpace: "nowrap",
+                fontFamily: "inherit",
+              }}
             >
-              <path
-                d="M5 12h14M13 6l6 6-6 6"
-                fill="none"
-                stroke="#2563eb"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <Box
+                component="span"
+                sx={{
+                  color: "#2563eb",
+                  fontWeight: 700,
+                  display: { md: "none", lg: "inline" },
+                }}
+              >
+                24H Offline Sprint
+              </Box>
+              <Box component="span" sx={{ color: "#d1d5db", display: { md: "none", lg: "inline" } }}>
+                •
+              </Box>
+              <Box component="span" sx={{ color: "#111827", fontWeight: 700 }}>
+                Feb 27 & 28, 2027
+              </Box>
+              <Box component="span" sx={{ color: "#d1d5db" }}>
+                •
+              </Box>
+              <Box component="span" sx={{ color: "#4b5563" }}>
+                Hyderabad
+              </Box>
+            </Box>
+
+            {/* Visual Divider */}
+            <Box
+              sx={{
+                width: "1px",
+                height: "16px",
+                background: "rgba(0,0,0,0.12)",
+                display: { md: "none", lg: "block" },
+              }}
+            />
+
+            {/* Campus Ambassador Distinct Live Badge */}
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.8,
+                px: 1,
+                py: 0.25,
+                borderRadius: "14px",
+                background: "rgba(16, 185, 129, 0.08)",
+                border: "1px solid rgba(16, 185, 129, 0.28)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <motion.span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "#10b981",
+                  display: "inline-block",
+                  boxShadow: "0 0 6px rgba(16, 185, 129, 0.8)",
+                }}
+                animate={{ scale: [1, 1.35, 1], opacity: [1, 0.6, 1] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
               />
-            </motion.svg>
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.74rem",
+                  fontWeight: 600,
+                  color: "#065f46",
+                  fontFamily: "inherit",
+                }}
+              >
+                Campus Ambassador
+              </Typography>
+              <Box
+                component="span"
+                sx={{
+                  background: "#10b981",
+                  color: "#ffffff",
+                  fontSize: "0.62rem",
+                  fontWeight: 800,
+                  px: 0.6,
+                  py: 0.1,
+                  borderRadius: "4px",
+                  letterSpacing: "0.5px",
+                  textTransform: "uppercase",
+                  lineHeight: 1.2,
+                }}
+              >
+                Open
+              </Box>
+            </Box>
+
+            {/* Squad Intake Pill (Visible on XL screens) */}
+            <Box
+              sx={{
+                display: { md: "none", xl: "inline-flex" },
+                alignItems: "center",
+                gap: 0.8,
+                px: 1,
+                py: 0.25,
+                borderRadius: "14px",
+                background: "rgba(234, 88, 12, 0.08)",
+                border: "1px solid rgba(234, 88, 12, 0.28)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.74rem",
+                  fontWeight: 600,
+                  color: "#9a3412",
+                  fontFamily: "inherit",
+                }}
+              >
+                Squad Passes
+              </Typography>
+              <Box
+                component="span"
+                sx={{
+                  background: "#ea580c",
+                  color: "#ffffff",
+                  fontSize: "0.62rem",
+                  fontWeight: 800,
+                  px: 0.6,
+                  py: 0.1,
+                  borderRadius: "4px",
+                  letterSpacing: "0.5px",
+                  textTransform: "uppercase",
+                  lineHeight: 1.2,
+                }}
+              >
+                Soon
+              </Box>
+            </Box>
+
+            {/* Action Link with Crayon Arrow */}
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.5,
+                ml: 0.5,
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "#a92427",
+                  fontFamily: "inherit",
+                  letterSpacing: "0.2px",
+                  display: { md: "none", lg: "inline" },
+                }}
+              >
+                novathon.kernn.ai
+              </Typography>
+              <motion.svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                className="crayon-filter"
+                animate={{ x: [0, 4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              >
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="#a92427"
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </motion.svg>
+            </Box>
           </Box>
 
           {/* Floating Doodles (Right Side) */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, position: "absolute", right: 40, pointerEvents: "none" }}>
+          <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", gap: 2, position: "absolute", right: { lg: 24, xl: 40 }, pointerEvents: "none" }}>
             {/* Crayon Lightbulb/Idea (Orange) */}
             <motion.svg
               width="20"
@@ -803,7 +993,7 @@ export default function Header() {
             borderBottom: "2px solid #1a1a1a",
             alignItems: "center",
             justifyContent: "center",
-            px: 2,
+            px: 1.5,
             cursor: "pointer",
             userSelect: "none",
             transition: "all 0.3s ease",
@@ -811,39 +1001,125 @@ export default function Header() {
               backgroundColor: "#fafafa",
               borderBottomColor: "#a92427",
             },
+            fontFamily: "system-ui, -apple-system, sans-serif",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography
-              className="novathon-banner-font"
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, maxWidth: "100%", overflow: "hidden" }}>
+            {/* Event Brand Pill */}
+            <Box
               sx={{
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                color: "#1a1a1a",
-                letterSpacing: "0.3px",
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
                 gap: 0.5,
+                px: 0.8,
+                py: 0.2,
+                borderRadius: "5px",
+                background: "rgba(169, 36, 39, 0.08)",
+                border: "1px solid rgba(169, 36, 39, 0.2)",
+                flexShrink: 0,
               }}
             >
-              <span style={{ color: "#e11d48" }}>★</span>
-              NOVATHON 2026:
-              <span style={{ color: "#ea580c" }}>Coming Soon! ✏️🎨</span>
-            </Typography>
+              <span style={{ color: "#e11d48", fontSize: "0.75rem", fontWeight: 900 }}>★</span>
+              <Typography
+                component="span"
+                sx={{
+                  fontWeight: 800,
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.4px",
+                  color: "#a92427",
+                  fontFamily: "inherit",
+                }}
+              >
+                NOVATHON 2027
+              </Typography>
+            </Box>
 
+            {/* Campus Ambassador Distinct Live Badge */}
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.5,
+                px: 0.8,
+                py: 0.2,
+                borderRadius: "10px",
+                background: "rgba(16, 185, 129, 0.08)",
+                border: "1px solid rgba(16, 185, 129, 0.28)",
+                flexShrink: 0,
+              }}
+            >
+              <motion.span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: "#10b981",
+                  display: "inline-block",
+                  boxShadow: "0 0 4px rgba(16, 185, 129, 0.8)",
+                }}
+                animate={{ scale: [1, 1.35, 1], opacity: [1, 0.6, 1] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+              />
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.68rem",
+                  fontWeight: 600,
+                  color: "#065f46",
+                  fontFamily: "inherit",
+                }}
+              >
+                Ambassador
+              </Typography>
+              <Box
+                component="span"
+                sx={{
+                  background: "#10b981",
+                  color: "#ffffff",
+                  fontSize: "0.58rem",
+                  fontWeight: 800,
+                  px: 0.45,
+                  py: 0.05,
+                  borderRadius: "3px",
+                  letterSpacing: "0.3px",
+                  textTransform: "uppercase",
+                  lineHeight: 1.1,
+                }}
+              >
+                Open
+              </Box>
+            </Box>
+
+            {/* Date (Visible on sm screens >= 600px) */}
+            <Box
+              sx={{
+                display: { xs: "none", sm: "inline-flex" },
+                alignItems: "center",
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                color: "#4b5563",
+                whiteSpace: "nowrap",
+                fontFamily: "inherit",
+              }}
+            >
+              Feb 27 & 28
+            </Box>
+
+            {/* Animated pointer arrow */}
             <motion.svg
-              width="14"
-              height="14"
+              width="13"
+              height="13"
               viewBox="0 0 24 24"
               className="crayon-filter"
-              animate={{ x: [0, 4, 0] }}
+              animate={{ x: [0, 3, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              style={{ flexShrink: 0 }}
             >
               <path
                 d="M5 12h14M13 6l6 6-6 6"
                 fill="none"
-                stroke="#2563eb"
-                strokeWidth="3.5"
+                stroke="#a92427"
+                strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />

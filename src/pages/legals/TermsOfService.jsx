@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import LegalPrintLayout from "../../components/LegalPrintLayout";
 import {
   Printer,
   Share2,
@@ -145,10 +147,8 @@ export default function TermsOfService() {
 
   const handlePrint = async () => {
     setPrintLoading(true);
-    setPrintMode(true);
 
-    let ip = "Unknown";
-
+    let ip = "127.0.0.1";
     try {
       const res = await fetch("https://api.ipify.org?format=json");
       const data = await res.json();
@@ -156,17 +156,9 @@ export default function TermsOfService() {
     } catch {}
 
     const time = new Date().toLocaleString();
-
-    setPrintMeta({
-      ip,
-      time,
-    });
-
-    setTimeout(() => {
-      window.print();
-      setPrintMode(false);
-      setPrintLoading(false);
-    }, 500);
+    setPrintMeta({ ip, time });
+    setPrintLoading(false);
+    setPrintMode(true);
   };
 
   const handleShare = async () => {
@@ -396,122 +388,6 @@ export default function TermsOfService() {
 
 /* ===== PRINT DOCUMENT MODE ===== */
 
-@page {
-  size: A4;
-  margin: 30mm 22mm 25mm 22mm;
-
-  @bottom-right {
-    content: "Page " counter(page) " of " counter(pages);
-    font-family: "Times New Roman", serif;
-    font-size: 9pt;
-    color: #333;
-  }
-}
-
-.print-mode * {
-  box-shadow: none !important;
-}
-
-/* hide UI */
-
-.print-mode .tos-sidebar,
-.print-mode .tos-actions-bar,
-.print-mode .tos-mob-toggle {
-  display: none !important;
-}
-
-.print-mode main {
-  margin-left: 0 !important;
-}
-
-/* text readability */
-
-.print-mode h1,
-.print-mode h2,
-.print-mode h3,
-.print-mode p,
-.print-mode span,
-.print-mode li {
-  color: #000 !important;
-}
-
-.print-mode .rp-meta-bar div {
-  color: #000 !important;
-  background: none !important;
-  border: 1px solid #ccc !important;
-}
-
-.print-mode .rp-header p {
-  color: #000 !important;
-}
-
-.print-mode table th,
-.print-mode table td {
-  color: #000 !important;
-}
-
-.print-mode .tos-header {
-  background: none !important;
-}
-
-/* metadata boxes */
-
-.print-mode .tos-meta-bar div {
-  background: none !important;
-  border: 1px solid #ccc !important;
-}
-
-/* header */
-
-.tos-print-header {
-  display: none;
-}
-
-.print-mode .tos-print-header {
-  display: block;
-  position: fixed;
-  top: 8mm;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: "Times New Roman", serif;
-  font-size: 11pt;
-  font-weight: 700;
-}
-
-/* footer */
-
-.tos-print-meta {
-  display: none;
-}
-
-.print-mode .tos-print-meta {
-  display: flex;
-  justify-content: space-between;
-  position: fixed;
-  bottom: 8mm;
-  left: 22mm;
-  right: 22mm;
-  font-family: "Times New Roman", serif;
-  font-size: 9pt;
-}
-
-/* page numbers */
-
-
-/* watermark */
-
-.print-mode::before {
-  content: "Kernn Automations Confidential";
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 70px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.1);
-  pointer-events: none;
-}
         .tos-sidebar-item:hover { background: ${ACCENT_LIGHT} !important; }
         .tos-sidebar-item.active { background: ${ACCENT_LIGHT} !important; color: ${ACCENT} !important; border-color: ${ACCENT_BDR} !important; }
         .tos-btn-print:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
@@ -547,11 +423,13 @@ export default function TermsOfService() {
     overflow-x: auto;
   }
 }
+        .legal-print-sheet .tos-article {
+          padding: 0 !important;
+        }
       `}</style>
 
       {/* ═══ ROOT ══════════════════════════════════════════════════════════ */}
       <div
-        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -695,18 +573,6 @@ export default function TermsOfService() {
             marginLeft: 268,
           }}
         >
-          {printMode && (
-            <>
-              <div className="tos-print-header">
-                Kernn Automations Private Limited — Terms of Service
-              </div>
-
-              <div className="tos-print-meta">
-                Printed from IP: {printMeta.ip} | Generated: {printMeta.time}
-                <span className="tos-print-pages"></span>
-              </div>
-            </>
-          )}
           {/* ── HERO ── */}
           <header
             className="tos-header"
@@ -857,14 +723,12 @@ export default function TermsOfService() {
             style={{
               background: BG_WHITE,
               borderBottom: `1px solid ${BORDER_LIGHT}`,
-              padding: "11px 60px",
+              padding: "12px 60px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              position: "sticky",
-              top: 80,
-              zIndex: 10,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              position: "relative",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
             }}
           >
             <div
@@ -872,23 +736,26 @@ export default function TermsOfService() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 10,
                 fontSize: "0.77rem",
                 color: TEXT_LIGHT,
               }}
             >
               <div
                 style={{
-                  width: 6,
-                  height: 6,
+                  width: 7,
+                  height: 7,
                   borderRadius: "50%",
                   background: ACCENT,
+                  boxShadow: "0 0 6px rgba(169,36,39,0.6)",
                 }}
               />
-              Kernn Automations Private Limited — Official Terms of Service
+              <span>Kernn Automations Private Limited — Official Terms of Service</span>
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="tos-btn-print"
                 onClick={handlePrint}
                 disabled={printLoading}
@@ -910,9 +777,11 @@ export default function TermsOfService() {
                 }}
               >
                 <Printer size={15} strokeWidth={2} />
-                {printLoading ? "Preparing…" : "Print"}
-              </button>
-              <button
+                {printLoading ? "Preparing…" : "Print / PDF"}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="tos-btn-share"
                 onClick={handleShare}
                 style={{
@@ -934,15 +803,28 @@ export default function TermsOfService() {
               >
                 <Share2 size={15} strokeWidth={2} />
                 Share
-              </button>
+              </motion.button>
             </div>
           </div>
 
-          {/* ═══ ARTICLE ══════════════════════════════════════════════════ */}
-          <article
-            className="tos-article"
-            style={{ padding: "0 60px 80px", width: "100%", margin: "0 auto" }}
+          {/* ═══ PRINT-FRIENDLY LAYOUT WRAPPER ═══ */}
+          <LegalPrintLayout
+            active={printMode}
+            onClose={() => setPrintMode(false)}
+            documentTitle="Official Terms of Service Agreement"
+            documentNumber="KA-LEGAL-2027-TOS"
+            effectiveDate="January 1, 2026"
+            lastUpdated="January 1, 2026"
+            printMeta={printMeta}
           >
+            <article
+              className="tos-article"
+              style={{
+                padding: printMode ? "0" : "0 60px 80px",
+                width: "100%",
+                margin: "0 auto",
+              }}
+            >
             {/* ── OVERVIEW ── */}
             <section
               id="overview"
@@ -2086,6 +1968,7 @@ export default function TermsOfService() {
               </div>
             </section>
           </article>
+        </LegalPrintLayout>
         </main>
       </div>
 

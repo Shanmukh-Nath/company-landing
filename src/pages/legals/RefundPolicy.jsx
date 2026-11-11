@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import LegalPrintLayout from "../../components/LegalPrintLayout";
 import {
   Printer,
   Share2,
@@ -120,10 +122,8 @@ export default function RefundPolicy() {
 
   const handlePrint = async () => {
     setPrintLoading(true);
-    setPrintMode(true);
 
-    let ip = "Unknown";
-
+    let ip = "127.0.0.1";
     try {
       const res = await fetch("https://api.ipify.org?format=json");
       const data = await res.json();
@@ -131,17 +131,9 @@ export default function RefundPolicy() {
     } catch {}
 
     const time = new Date().toLocaleString();
-
-    setPrintMeta({
-      ip,
-      time,
-    });
-
-    setTimeout(() => {
-      window.print();
-      setPrintMode(false);
-      setPrintLoading(false);
-    }, 500);
+    setPrintMeta({ ip, time });
+    setPrintLoading(false);
+    setPrintMode(true);
   };
 
   const handleShare = async () => {
@@ -369,75 +361,6 @@ export default function RefundPolicy() {
   .no-print { display: none !important; }
 }
 
-/* ================= PRINT DOCUMENT MODE ================= */
-
-@page {
-  size: A4;
-  margin: 30mm 22mm 25mm 22mm;
-
-  @bottom-right {
-    content: "Page " counter(page) " of " counter(pages);
-    font-family: "Times New Roman", serif;
-    font-size: 9pt;
-    color: #333;
-  }
-}
-
-.print-mode * {
-  box-shadow: none !important;
-}
-
-.print-mode .rp-sidebar,
-.print-mode .rp-actions-bar,
-.print-mode .rp-mob-toggle {
-  display: none !important;
-}
-
-.print-mode main {
-  margin-left: 0 !important;
-}
-
-.print-mode .rp-header {
-  background: none !important;
-  color: #000 !important;
-}
-
-.print-mode h1,
-.print-mode h2,
-.print-mode h3,
-.print-mode p,
-.print-mode span,
-.print-mode li {
-  color: #000 !important;
-}
-
-.print-mode .rp-meta-bar div {
-  color: #000 !important;
-  background: none !important;
-  border: 1px solid #ccc !important;
-}
-
-.print-mode .rp-header p {
-  color: #000 !important;
-}
-
-.print-mode table th,
-.print-mode table td {
-  color: #000 !important;
-}
-
-.print-mode h1 span {
-  -webkit-text-fill-color: #000 !important;
-  color: #000 !important;
-}
-
-.print-mode section {
-  page-break-inside: avoid;
-}
-
-.print-mode .rp-article {
-  padding: 0 !important;
-}
         .rp-sidebar-item:hover { background: ${ACCENT_LIGHT} !important; }
         .rp-sidebar-item.active { background: ${ACCENT_LIGHT} !important; color: ${ACCENT} !important; border-color: ${ACCENT_BDR} !important; }
         .rp-btn-print:hover { border-color: ${ACCENT} !important; color: ${ACCENT} !important; background: ${ACCENT_LIGHT} !important; }
@@ -480,72 +403,13 @@ export default function RefundPolicy() {
           .rp-contact-grid { grid-template-columns: 1fr !important; }
           .rp-meta-bar { flex-wrap: wrap !important; }
         }
-          .print-mode .rp-article {
-  padding: 0 !important;
-}
-  /* PRINT FOOTER */
-
-/* PRINT HEADER */
-
-.rp-print-header {
-  display: none;
-}
-
-.print-mode .rp-print-header {
-  display: block;
-  position: fixed;
-  top: 8mm;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: "Times New Roman", serif;
-  font-size: 11pt;
-  font-weight: 700;
-  color: #000;
-}
-
-/* PRINT FOOTER */
-
-.rp-print-meta {
-  display: none;
-}
-
-.print-mode .rp-print-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  bottom: 8mm;
-  left: 22mm;
-  right: 22mm;
-  font-family: "Times New Roman", serif;
-  font-size: 9pt;
-  color: #333;
-}
-
-/* PAGE NUMBERS */
-
-
-
-/* WATERMARK */
-
-.print-mode::before {
-  content: "Kernn Automations Confidential";
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 70px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.1);
-  pointer-events: none;
-  z-index: 100;
-}
+        .legal-print-sheet .rp-article {
+          padding: 0 !important;
+        }
       `}</style>
 
       {/* ═══ ROOT ══════════════════════════════════════════════════════════ */}
       <div
-        className={printMode ? "print-mode" : ""}
         style={{
           display: "flex",
           minHeight: "calc(100vh - 80px)",
@@ -683,18 +547,6 @@ export default function RefundPolicy() {
 
         {/* ═══ MAIN ══════════════════════════════════════════════════════ */}
         <main style={{ flex: 1, minWidth: 0, marginLeft: 268 }}>
-          {printMode && (
-            <>
-              <div className="rp-print-header">
-                Kernn Automations Private Limited — Refund Policy
-              </div>
-
-              <div className="rp-print-meta">
-                Printed from IP: {printMeta.ip} | Generated: {printMeta.time}
-                <span className="rp-print-pages"></span>
-              </div>
-            </>
-          )}
           {/* ── HERO ── */}
           <header
             className="rp-header"
@@ -843,14 +695,12 @@ export default function RefundPolicy() {
             style={{
               background: BG_WHITE,
               borderBottom: `1px solid ${BORDER_LIGHT}`,
-              padding: "11px 60px",
+              padding: "12px 60px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              position: "sticky",
-              top: 80,
-              zIndex: 10,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              position: "relative",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
             }}
           >
             <div
@@ -858,23 +708,26 @@ export default function RefundPolicy() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 10,
                 fontSize: "0.77rem",
                 color: TEXT_LIGHT,
               }}
             >
               <div
                 style={{
-                  width: 6,
-                  height: 6,
+                  width: 7,
+                  height: 7,
                   borderRadius: "50%",
                   background: ACCENT,
+                  boxShadow: "0 0 6px rgba(169,36,39,0.6)",
                 }}
               />
-              Kernn Automations Private Limited — Official Refund Policy
+              <span>Kernn Automations Private Limited — Official Refund Policy</span>
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="rp-btn-print"
                 onClick={handlePrint}
                 disabled={printLoading}
@@ -896,9 +749,11 @@ export default function RefundPolicy() {
                 }}
               >
                 <Printer size={15} strokeWidth={2} />
-                {printLoading ? "Preparing…" : "Print"}
-              </button>
-              <button
+                {printLoading ? "Preparing…" : "Print / PDF"}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="rp-btn-share"
                 onClick={handleShare}
                 style={{
@@ -920,15 +775,24 @@ export default function RefundPolicy() {
               >
                 <Share2 size={15} strokeWidth={2} />
                 Share
-              </button>
+              </motion.button>
             </div>
           </div>
 
-          {/* ═══ ARTICLE ══════════════════════════════════════════════════ */}
-          <article
-            className="rp-article"
-            style={{ padding: "0 60px 80px", width: "100%" }}
+          {/* ═══ PRINT-FRIENDLY LAYOUT WRAPPER ═══ */}
+          <LegalPrintLayout
+            active={printMode}
+            onClose={() => setPrintMode(false)}
+            documentTitle="Official Refund & Cancellation Policy"
+            documentNumber="KA-LEGAL-2027-RP"
+            effectiveDate="January 1, 2026"
+            lastUpdated="January 1, 2026"
+            printMeta={printMeta}
           >
+            <article
+              className="rp-article"
+              style={{ padding: printMode ? "0" : "0 60px 80px", width: "100%" }}
+            >
             {/* ── OVERVIEW ── */}
             <section
               id="overview"
@@ -1878,6 +1742,7 @@ export default function RefundPolicy() {
               </div>
             </section>
           </article>
+        </LegalPrintLayout>
         </main>
       </div>
 
