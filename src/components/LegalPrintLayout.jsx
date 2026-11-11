@@ -120,7 +120,7 @@ export default function LegalPrintLayout({
               color: #0F172A !important;
             }
 
-            /* ── Tight, Professional Flow: Remove Huge Empty Spaces ── */
+            /* ── Tight, Professional Flow: Remove Huge Empty Spaces & Prevent Cut-in-Half Elements ── */
             .legal-print-sheet section {
               margin-bottom: 22px !important;
               padding-bottom: 18px !important;
@@ -140,6 +140,8 @@ export default function LegalPrintLayout({
             .legal-print-sheet h3,
             .legal-print-sheet h4,
             .legal-print-sheet .section-header {
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
               page-break-after: avoid !important;
               break-after: avoid !important;
               margin-top: 18px !important;
@@ -147,13 +149,14 @@ export default function LegalPrintLayout({
               color: #0F172A !important;
             }
 
+            /* Paragraphs must NEVER be cut in half horizontally */
             .legal-print-sheet p {
               margin-bottom: 8px !important;
               line-height: 1.65 !important;
               orphans: 3 !important;
               widows: 3 !important;
-              page-break-inside: auto !important;
-              break-inside: auto !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
             .legal-print-sheet ul,
@@ -161,13 +164,32 @@ export default function LegalPrintLayout({
               margin-top: 4px !important;
               margin-bottom: 10px !important;
               padding-left: 24px !important;
+              page-break-inside: auto !important;
+              break-inside: auto !important;
             }
 
+            /* List items must NEVER be cut in half */
             .legal-print-sheet li {
               margin-bottom: 4px !important;
               line-height: 1.5 !important;
-              page-break-inside: auto !important;
-              break-inside: auto !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+            }
+
+            /* Cards, Callouts, and Boxed Micro-components: NEVER cut in half */
+            .legal-print-sheet .pp-overview-card,
+            .legal-print-sheet .rp-overview-card,
+            .legal-print-sheet .tos-overview-card,
+            .legal-print-sheet .pp-right-card,
+            .legal-print-sheet .rp-right-card,
+            .legal-print-sheet .tos-right-card,
+            .legal-print-sheet div[style*="borderLeft"],
+            .legal-print-sheet div[style*="border-left"],
+            .legal-print-sheet div[style*="borderRadius"],
+            .legal-print-sheet div[style*="border-radius"],
+            .legal-print-sheet .avoid-break {
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
             .legal-print-sheet table {
@@ -176,6 +198,12 @@ export default function LegalPrintLayout({
               margin: 12px 0 !important;
               page-break-inside: auto !important;
               break-inside: auto !important;
+            }
+
+            .legal-print-sheet thead {
+              display: table-header-group !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
             .legal-print-sheet tr {
@@ -189,6 +217,14 @@ export default function LegalPrintLayout({
               font-size: 8.5pt !important;
               line-height: 1.4 !important;
               color: #000000 !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+            }
+
+            .legal-print-letterhead,
+            .legal-execution-block {
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
             /* Responsive tweaks for print preview toolbar */
@@ -309,12 +345,28 @@ export default function LegalPrintLayout({
 
               /* Section & Heading flow rules: prevent awkward breaks and white spaces */
               h1, h2, h3, h4, .section-header {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
                 break-after: avoid !important;
                 page-break-after: avoid !important;
                 color: #000000 !important;
               }
 
-              .avoid-break, tr {
+              /* Never cut paragraphs, list items, cards, callouts, or rows in half */
+              p, li, tr, th, td,
+              .avoid-break,
+              .legal-print-letterhead,
+              .legal-execution-block,
+              .pp-overview-card,
+              .rp-overview-card,
+              .tos-overview-card,
+              .pp-right-card,
+              .rp-right-card,
+              .tos-right-card,
+              div[style*="borderLeft"],
+              div[style*="border-left"],
+              div[style*="borderRadius"],
+              div[style*="border-radius"] {
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
               }
@@ -322,6 +374,12 @@ export default function LegalPrintLayout({
               table {
                 width: 100% !important;
                 border-collapse: collapse !important;
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+              }
+
+              thead {
+                display: table-header-group !important;
               }
 
               table th, table td {
@@ -806,12 +864,15 @@ export default function LegalPrintLayout({
 
               {/* ── Formal Corporate Letterhead ── */}
               <div
+                className="legal-print-letterhead"
                 style={{
                   borderBottom: "3px double #0F172A",
                   paddingBottom: "22px",
                   marginBottom: "28px",
                   position: "relative",
                   zIndex: 2,
+                  breakInside: "avoid",
+                  pageBreakInside: "avoid",
                 }}
               >
                 {/* Top Crimson Security Bar */}
@@ -1036,6 +1097,7 @@ export default function LegalPrintLayout({
 
               {/* ── Official Corporate Execution & Attestation Seal Block ── */}
               <div
+                className="legal-execution-block"
                 style={{
                   marginTop: "44px",
                   paddingTop: "24px",
